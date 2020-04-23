@@ -1,4 +1,4 @@
-//package data;
+package data;
 
 /**
  * testing
@@ -9,6 +9,7 @@
  */
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class SNIDDb {
@@ -16,6 +17,7 @@ public class SNIDDb {
     private char delimiter;
     private String fileName;
     private BufferedReader bReader;
+    private BufferedWriter bWriter;
 
     /**
      * Constructor for the SNIDDb class
@@ -25,9 +27,14 @@ public class SNIDDb {
 
     public SNIDDb(String fileName, char delimiter){
         this.delimiter=delimiter;
+        this.fileName=fileName;
         try{
             bReader = new BufferedReader(new FileReader(fileName));
+            bWriter = new BufferedWriter(new FileWriter(fileName));
         }catch(FileNotFoundException e){
+            
+        }catch(IOException e){
+
         }
     }
 
@@ -58,11 +65,13 @@ public class SNIDDb {
         }
     }
 
-   
+   /**
+    * 
+    */
    public void reWrite(){
        try{
-            bReader.close();
-            bReader = new BufferedReader(new FileReader(fileName));
+            bWriter.close();
+            bWriter = new BufferedWriter(new FileWriter(fileName,true));
         }catch(FileNotFoundException e){
             System.out.println("The file could not be found");
         }catch(IOException e){
@@ -70,46 +79,47 @@ public class SNIDDb {
         }
     
    }
+   /**
+    * 
+    */
    public void putNext(String[] data){
-       // Temporary bandaid that works
-        try(
-            BufferedWriter bWrite = new BufferedWriter(new FileWriter(fileName));
-        ){
-            for(String entry:data){
-                bWrite.write(entry+delimiter);
-                bWrite.newLine();
+        try{
+           reWrite();
+            for(int index = 0; index < data.length; index++){
+                if(index != (data.length - 1)){
+                    bWriter.write(data[index] + delimiter);
+                }else{
+                    bWriter.write(data[index]);
+                }
             }
+            bWriter.newLine();
+        }catch(NullPointerException e){
+            e.printStackTrace();
         }catch(IOException e){
-           System.out.println("Unexpected IOException has been thrown");
+            e.printStackTrace(); // TODO Insert proper error message
+        }finally{
+            try{
+                bWriter.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
         }
     }
+
     public static void main(String[]args){
-        //try{
-            try {
-                File myObj = new File("test.txt");
-                if (myObj.createNewFile()) {
-                  System.out.println("File created: " + myObj.getName());
-                } else {
-                  System.out.println("File already exists.");
-                }
-              } catch (IOException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-              }
            // File file = new File("test.txt");
-            Scanner in = new Scanner(System.in);
+           // Scanner in = new Scanner(System.in);
             SNIDDb test = new SNIDDb("test.txt",',');
-            for(int i = 0;i<5;i++){
-                String[] hi = {"User",Integer.toString(i)};
-                test.putNext(hi);
-               // test.reWrite();
+            String[] hi = {"User",Integer.toString(5)};
+            System.out.println(Arrays.toString(hi));
+            String[] hi2 = {"User",Integer.toString(3)};
+            test.putNext(hi);
+            test.putNext(hi2);
             }
             
 
 
         //}catch(Exception e){
             // TODO Implement error handling
-            System.out.println("Testing");
        // }
-    }
 }
