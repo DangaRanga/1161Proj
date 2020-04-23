@@ -11,10 +11,10 @@ package data;
 import java.io.*;
 
 public class SNIDDb {
-    // FileReader fReader;
+    // I
     private char delimiter;
     private String fileName;
-    BufferedReader bReader;
+    private BufferedReader bReader;
 
     /**
      * Constructor for the SNIDDb class
