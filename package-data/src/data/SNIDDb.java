@@ -18,6 +18,7 @@ public class SNIDDb {
     private String fileName;
     private BufferedReader bReader;
     private BufferedWriter bWriter;
+    private String line;
 
     /**
      * Constructor for the SNIDDb class
@@ -32,8 +33,9 @@ public class SNIDDb {
             bReader = new BufferedReader(new FileReader(fileName));
             bWriter = new BufferedWriter(new FileWriter(fileName));
         }catch(FileNotFoundException e){
-            
+            System.out.println("The file could not be found");
         }catch(IOException e){
+            System.out.println("An unexpected IO excepton has occured" + e.getMessage());
 
         }
     }
@@ -44,43 +46,46 @@ public class SNIDDb {
      * to check if there are any more lines in the file to read
      * @return A boolean value indicating if the next line in the file
      * can be read
-     * @throws IOException Which is later caught in the constructor for the
-     * SNIDDb
+     * @throws IOException Which is later caught in the main for the
+     * SNIDDb at the moment.
      */
 
     public boolean hasNext() throws IOException{
-        return bReader.readLine() != null;
+        line = bReader.readLine();
+        return line != null;
     }
     /**
      * Method to get the next line in the file
-     * 
+     * @return A String array containing the data from the file
+     * @throws IOException Which is currently handled in the main method
      */
     public String[] getNext() throws IOException{
-        try{
-            String line = bReader.readLine();
+        if(hasNext()){
+           // String line = bReader.readLine();
             return line.split(Character.toString(delimiter));
-        }catch(NullPointerException e){
-            System.out.println("The file is empty");
+        }else{
             return new String[0];
         }
     }
 
    /**
-    * 
+    * Method to reopen close and reopen the BufferedWriter to allow for the file
+    * to be written to
     */
    public void reWrite(){
        try{
             bWriter.close();
             bWriter = new BufferedWriter(new FileWriter(fileName,true));
-        }catch(FileNotFoundException e){
-            System.out.println("The file could not be found");
         }catch(IOException e){
-            System.out.println("An inexpected IOException has occured: " + e.getMessage());
+            System.out.println("An unexpected IOException has occured: " + e.getMessage());
         }
     
    }
    /**
-    * 
+    * Method to append data to the file
+    * This works by iterating through the String array, and uses the
+    * BufferedWriter to append data separated by the delimeter to the file
+    * This method calls on the reWrite() method to reopen the BufferedWriter 
     */
    public void putNext(String[] data){
         try{
@@ -92,17 +97,9 @@ public class SNIDDb {
                     bWriter.write(data[index]);
                 }
             }
-            bWriter.newLine();
-        }catch(NullPointerException e){
-            e.printStackTrace();
+           // bWriter.close();
         }catch(IOException e){
-            e.printStackTrace(); // TODO Insert proper error message
-        }finally{
-            try{
-                bWriter.close();
-            }catch(IOException e){
-                e.printStackTrace();
-            }
+            System.out.println("An unexpected IOException has occured: " + e.getMessage());
         }
     }
 
@@ -111,11 +108,17 @@ public class SNIDDb {
            // Scanner in = new Scanner(System.in);
             SNIDDb test = new SNIDDb("test.txt",',');
             String[] hi = {"User",Integer.toString(5)};
-            System.out.println(Arrays.toString(hi));
+            //System.out.println(Arrays.toString(hi));
             String[] hi2 = {"User",Integer.toString(3)};
             test.putNext(hi);
             test.putNext(hi2);
+            try{
+            System.out.println(Arrays.toString(test.getNext()));
+            System.out.println(Arrays.toString(test.getNext()));
+            }catch(IOException e){
+
             }
+        }
             
 
 
