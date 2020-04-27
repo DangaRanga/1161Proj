@@ -48,6 +48,7 @@ public class SNIDDb {
     public boolean hasNext() throws IOException{
         return bReader.readLine() != null;
     }
+
     /**
      * Method to get the next line in the file
      * <br>
@@ -71,6 +72,7 @@ public class SNIDDb {
     * <br>
     * This works by instantiating a new BufferedWriter, with the FileWriter set to append mode
     */
+
    public void reWrite(){
        try{
            // Closing the buffered writer opened in the constructor
@@ -91,6 +93,7 @@ public class SNIDDb {
     * @param data This is a String array representing the data to be written to the file
     * 
     */
+    
    public void putNext(String[] data){
         reWrite();
         try{
