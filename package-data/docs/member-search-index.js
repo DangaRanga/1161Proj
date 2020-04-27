@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"data","c":"SNIDDb","l":"getNext()"},{"p":"data","c":"SNIDDb","l":"hasNext()"},{"p":"data","c":"SNIDDb","l":"putNext(String[])","url":"putNext(java.lang.String[])"},{"p":"data","c":"SNIDDb","l":"reWrite()"},{"p":"data","c":"SNIDDb","l":"SNIDDb(String, char)","url":"%3Cinit%3E(java.lang.String,char)"}]
