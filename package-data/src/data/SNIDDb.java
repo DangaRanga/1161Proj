@@ -7,10 +7,9 @@ package data;
  */
 
 import java.io.*;
-import java.util.Arrays;
 
 public class SNIDDb {
-    // I
+    // Attributes for the SNIDDb class
     private char delimiter;
     private String fileName;
     private BufferedReader bReader;
@@ -18,8 +17,9 @@ public class SNIDDb {
 
     /**
      * Constructor for the SNIDDb class
-     * @param fileName
-     * @param delimiter
+     * To set the delimiter and file name, and to instantiate the BufferedReader and BufferedWriter
+     * @param fileName A String representing the name of the file to be read and written to
+     * @param delimiter A character representing the splits the lines in the file into tokens
      */
 
     public SNIDDb(String fileName, char delimiter){
@@ -31,7 +31,7 @@ public class SNIDDb {
         }catch(FileNotFoundException e){
             System.out.println("The file could not be found");
         }catch(IOException e){
-            e.printStackTrace();
+            System.out.println("An unexpected IOException has occured while constructing: "+e.getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ public class SNIDDb {
      * @return A boolean value indicating if the next line in the file
      * can be read
      * @throws IOException Which is later caught in the constructor for the
-     * SNIDDb
+     * SNIDDApp
      */
 
     public boolean hasNext() throws IOException{
@@ -50,23 +50,30 @@ public class SNIDDb {
     }
     /**
      * Method to get the next line in the file
-     * 
+     * <br>
+     * This works by using the hasNext() method and the readLine() method
+     * fromthe buffered reader clas to check if the line can be retrieved.
+     * @return A string array representing a line in the file
+     * @throws IOException Which is later caught in the SNIDDApp
      */
     public String[] getNext() throws IOException{
-        try{
+        if(hasNext()){
             String line = bReader.readLine();
             return line.split(Character.toString(delimiter));
-        }catch(NullPointerException e){
+        }else{
             System.out.println("The file is empty");
             return new String[0];
         }
     }
 
    /**
-    * 
+    * This method is used to close and reopen the file for writing
+    * <br>
+    * This works by instantiating a new BufferedWriter, with the FileWriter set to append mode
     */
    public void reWrite(){
        try{
+           // Closing the buffered writer opened in the constructor
             bWriter.close();
             bWriter = new BufferedWriter(new FileWriter(fileName,true));
         }catch(FileNotFoundException e){
@@ -74,35 +81,39 @@ public class SNIDDb {
         }catch(IOException e){
             System.out.println("An inexpected IOException has occured: " + e.getMessage());
         }
-    
    }
 
    /**
+    * Method to add a new line to the file
+    * <br>
+    * This works by Iterating through a String array, then writing each
+    *component of the array, separated by the delimiter set in the constructor 
+    * @param data This is a String array representing the data to be written to the file
     * 
     */
-   public void putNext(String[] data) throws IOException{
+   public void putNext(String[] data){
         reWrite();
-        for(int index = 0; index < data.length; index++){
-            if(index!=(data.length-1)){
-                bWriter.write(data[index]+delimiter);
-            }else{
-                bWriter.write(data[index]);
+        try{
+            for(int index = 0; index < data.length; index++){
+                if(index!=(data.length-1)){
+                    bWriter.write(data[index]+delimiter);
+                }else{
+                    bWriter.write(data[index]);
+                    bWriter.newLine();
+                }
+            }
+        // Exception handling to handle the IOException thrown by the BufferedWriter
+        }catch(IOException e){
+            System.out.println("An unexpected IOException has occured: " + e.getMessage());
+        }finally{
+            if (bWriter != null){
+                // Try-catch block to close the BufferedWriter
+                try{
+                    bWriter.close();
+                }catch(IOException e){
+                    System.out.println("An unexpected IOException has occured while closing: "+ e.getMessage());
+                }
             }
         }
-        bWriter.newLine();
-        bWriter.close();
    }
- 
-    public static void main(String[]args) throws IOException{
-           try{
-           SNIDDb test = new SNIDDb("test.txt",',');
-            String[] hi = {"User",Integer.toString(5)};
-            System.out.println(Arrays.toString(hi));
-            String[] hi2 = {"User",Integer.toString(3)};
-            test.putNext(hi);
-            test.putNext(hi2);
-           }catch(IOException e){
-               e.printStackTrace();
-           }
-        }
 }
