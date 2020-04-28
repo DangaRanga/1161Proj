@@ -24,7 +24,11 @@ public class SNIDApp {
         records.add(newCitizen);
 
     }
-
+    /**
+     * Linear search to find the ID
+     * @param id
+     * @return An integer representing the index in the arraylist with the user
+     */
     private int idSearch(String id){
         int index=-1;
         Collections.sort(records);
@@ -50,27 +54,28 @@ public class SNIDApp {
         
         
 
-
-
-
-        /*
-        * I'm assuming this method will search through the list and add the persons with
-        * The corresponding ids as parents
-        * I believe a Binary serch might be needed for this.
-        */
     }
    
-
+    /**
+     * 
+     * @param id
+     * @param street
+     * @param town
+     * @param parish
+     * @param country
+     */
     public void updateAddress(String id,String street, String town, String parish, String country){
         Collections.sort(records); // This might throw a null pointer exception
-        Citizen stubCitizen = new Citizen('M',0,null,null,null); // Creating a stub citizen for now
-        /* 
-        If the ids match up then the address for the user is set
-        So once the citizen is found in the arrayList, you'll get them from the arrayList
-        Then set the address for the citizen found here. 
-        */
-        stubCitizen.setAddress(new Address(street+"|"+town+"|"+parish+"|"+country));
+        int index = idSearch(id);
+        try{
+            Citizen person = records.get(index);
+            person.setAddress(new Address(street+"|"+town+"|"+parish+"|"+country));
+        }catch(IndexOutOfBoundsException e){
+            System.out.println("There is no user at that position" + e.getMessage());
+        }
     }
+
+    
 
 
 }
