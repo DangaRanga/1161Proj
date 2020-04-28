@@ -7,7 +7,7 @@ package data;
  */
 
 import java.io.*;
-import java.util.Scanner;
+
 
 public class SNIDDb {
     // Attributes for the SNIDDb class
