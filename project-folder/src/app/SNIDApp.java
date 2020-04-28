@@ -24,12 +24,8 @@ public class SNIDApp {
         records.add(newCitizen);
 
     }
-    /**
-     * Linear search to find the ID
-     * @param id
-     * @return An integer representing the index in the arraylist with the user
-     */
-    private int idSearch(String id){
+    /*     
+   /* private int idSearch(String id){
         int index=-1;
         Collections.sort(records);
         for(int position=0;position<records.size();position++){
@@ -38,13 +34,42 @@ public class SNIDApp {
             }
         }
         return index;
+    
         
+    } */
+
+    /**
+     * @author Mario Anckle
+     * Private method to search for the Id of a citizen using a binary search
+     *  @param id
+     * @return An integer representing the index in the arraylist with the user
+     */
+    private int idSearch(String id){
+        Collections.sort(records);
+        int firstIndex = 0;
+        int lastIndex = records.size() -1;
+
+        while(firstIndex <= lastIndex) {
+            int middleIndex = (firstIndex + lastIndex) / 2;
+            // parseInt to convert the id to an integer
+            // It might be best to put this in a try-catch block
+            if (Integer.parseInt(records.get(middleIndex).getId()) == Integer.parseInt(id)){
+                return middleIndex;
+            }
+           
+            else if (Integer.parseInt(records.get(middleIndex).getId()) < Integer.parseInt(id)){
+                firstIndex = middleIndex + 1;
+            }
+            else if (Integer.parseInt(records.get(middleIndex).getId()) > Integer.parseInt(id)){
+                lastIndex = middleIndex - 1;
+            }
+        }
+        return -1;
+
+        // You can just replace what I have for id search
+
     }
     public void addParentData(String id,String father, String mother){
-        //String citizenID = id;
-        //start from the lastindex so we don't get out of bounds
-        // For now we can use a linear search okay
-        // i'm back check 
         int citizenPosition = idSearch(id);
         // Insert if statment to check if mother and father position aren't negative
         int fatherPosition = idSearch(father);
@@ -75,7 +100,11 @@ public class SNIDApp {
         }
     }
 
-    
+    public static void main(String[]args){
+        SNIDApp test = new SNIDApp("test.txt",',');
+        test.registerBirth('M',1000,"yes", "no", "why");
+        System.out.println(test.idSearch("1"));
+    }
 
 
 }

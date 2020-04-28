@@ -7,6 +7,7 @@ package data;
  */
 
 import java.io.*;
+import java.util.Scanner;
 
 public class SNIDDb {
     // Attributes for the SNIDDb class
@@ -30,6 +31,12 @@ public class SNIDDb {
             bWriter = new BufferedWriter(new FileWriter(fileName,true));
         }catch(FileNotFoundException e){
             System.out.println("The file could not be found");
+            File file = new File(fileName);
+            try{
+            file.createNewFile();
+            }catch(IOException f){
+                System.out.println("An unexpected IOException has occured while making file");
+            }
         }catch(IOException e){
             System.out.println("An unexpected IOException has occured while constructing: "+e.getMessage());
         }
