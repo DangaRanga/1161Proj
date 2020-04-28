@@ -2,6 +2,7 @@
 
 
 # How to compile
-From the src folder type javac -d ../bin "the package name"/*.java
-or
+From the src folder type javac:\s\s
+-d ../bin "the package name"/*.java\s\s
+or\s\s
 javac -d ../bin data/*.java && javac -d ../bin app/*.java
