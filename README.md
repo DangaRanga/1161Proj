@@ -12,3 +12,8 @@ Change directories to the src folder and type the following command:
 javac -d ../bin "the package name"/*.java    
 or  
 javac -d ../bin data/*.java && javac -d ../bin app/*.java (if you want to compile the app and data package at the same time)
+
+# How to run(The SNIDApp)
+In the src type the following command  
+
+java -cp ../bin app.SNIDApp
