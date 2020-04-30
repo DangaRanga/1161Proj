@@ -6,12 +6,12 @@ package app;
  */
 import data.*;
 import snid.*;
-import java.io.*;
 import java.util.*;
 
 public class SNIDApp {
     private SNIDDb database;
     private static int marriageCounter;
+    private HashMap<String,Name> names;
     private HashMap<String,String[]> marriages;
     private ArrayList<Citizen> records;
 
@@ -22,6 +22,7 @@ public class SNIDApp {
         database = new SNIDDb(fileName,delimiter);
         records = new ArrayList<Citizen>();
         marriages = new HashMap<String,String[]>();
+        names = new HashMap<String,Name>(); // Temporary solution for the names problem
     }
 
     /**
@@ -36,10 +37,16 @@ public class SNIDApp {
         Citizen newCitizen = new Citizen(gender,yob,fName,mName,lName);
         newCitizen.setLifeStatus(0);
         records.add(newCitizen);
+        // Temporary Solution to get the names, by storing the name with an id
+        names.put(newCitizen.getId(),new Name(fName,mName,lName));
     }
 
+
     /**
-     * Method to register two Citizens' marriage
+     * Method to register two Citizens' marriage.
+     * <br>
+     * Currently, each Citizen's marriage data is stored in a HashMap
+     * With the marriage number as the key
      * @param groomId The id of the groom
      * @param brideId The id of the bride
      * @param marriageDate The date of marriage
@@ -108,34 +115,55 @@ public class SNIDApp {
     /**
      * Method to add parentData to a citizen
      * @param id The citizen's id
-     * @param father The father's id
-     * @param mother The mother's id
+     * @param fatherId The father's id
+     * @param motherId The mother's id
      */
-    public void addParentData(String id,String father, String mother){
+    public void addParentData(String id,String fatherId, String motherId){
         int citizenPosition = idSearch(id);
         // Insert if statment to check if mother and father position aren't negative
-        int fatherPosition = idSearch(father);
-        int motherPosition = idSearch(mother);
+        int fatherPosition = idSearch(fatherId);
+        int motherPosition = idSearch(motherId);
         records.get(citizenPosition).setParent('F', records.get(fatherPosition));
         records.get(citizenPosition).setParent('M', records.get(motherPosition));
     }
 
     /**
-     * Method to get the Citizen's father
+     * Method to get the Citizen's father.
      * @param id The id of the Citizen
      * @return A formatted String representing the father's details
      */
 
     public String getFather(String id){
         int citizenPosition = idSearch(id);
+        // Casting father as a Citizen, since a Person doesn't have a name
         Citizen father =  (Citizen)records.get(citizenPosition).getParent('F');
         if(father!=null){
-            // Stub for now
-            return father.getId() + father.getName();
+           String fatherId = father.getId();
+           Name fatherName = names.get(fatherId); // Since the id is the key
+           return fatherId + "," + fatherName.getFirstName() + "," +
+                    fatherName.getMiddleName() + "," + fatherName.getLastName();
         }
         return "";
     }
 
+    /**
+     * Method to get the Citizen's mother
+     * @param id The id of the Citizen
+     * @return A formatted String representing the Citizen's mother's details
+     */
+
+    public String getMother(String id){
+        int citizenPosition = idSearch(id);
+        // Casting mother as a Citizen, since a Person doesn't have a name
+        Citizen mother =  (Citizen)records.get(citizenPosition).getParent('M');
+        if(mother!=null){
+           String motherId = mother.getId();
+           Name motherName = names.get(motherId); // Since the id is the key
+           return  motherId + "," + motherName.getFirstName() + "," +
+                    motherName.getMiddleName() + "," + motherName.getLastName();
+        }
+        return "";
+    }
     
    
     /**
@@ -177,13 +205,19 @@ public class SNIDApp {
     // TODO Implement Unittesting with JUnit
     public static void main(String[]args){
         SNIDApp test = new SNIDApp("test.txt",',');
-        test.registerBirth('M',1000,"yes", "no", "why");
+        test.registerBirth('M',1000,"yes", "no", "why"); // id = 1
+        test.registerBirth('M',999,"Steve","Something","Jobs");
+        test.registerBirth('F',420,"Martha","Something","Gates");
+        test.addParentData("1", "2", "3");
+        System.out.println("Father: " + test.getFather("1"));
+        System.out.println("Mother: " + test.getMother("1"));
+
 
 
         //--------------------------------------------------------------------//
         // Time for id search
         //--------------------------------------------------------------------//
-        long startTime1 = System.nanoTime();
+       /* long startTime1 = System.nanoTime();
         test.idSearch("1");
         long endTime1 = System.nanoTime();
         System.out.println("Time for idSearch: "+(endTime1-startTime1)+" nanoseconds");
@@ -197,6 +231,7 @@ public class SNIDApp {
         System.out.println("Time for idSearchComp: "+(endTime2-startTime2) + " nanoseconds");
         System.out.println("Time in milliseconds "+((endTime2-startTime2)/1000000));
         //--------------------------------------------------------------------//
+        */
     }
 
 
