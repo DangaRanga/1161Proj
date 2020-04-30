@@ -101,7 +101,6 @@ public class SNIDApp {
             if (Integer.parseInt(records.get(middleIndex).getId()) == Integer.parseInt(id)){
                 return middleIndex;
             }
-           
             else if (Integer.parseInt(records.get(middleIndex).getId()) < Integer.parseInt(id)){
                 firstIndex = middleIndex + 1;
             }
