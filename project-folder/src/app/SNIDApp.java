@@ -95,7 +95,6 @@ public class SNIDApp {
         Collections.sort(records);
         int firstIndex = 0;
         int lastIndex = records.size() -1;
-
         while(firstIndex <= lastIndex) {
             int middleIndex = (firstIndex + lastIndex) / 2;
             if (Integer.parseInt(records.get(middleIndex).getId()) == Integer.parseInt(id)){
