@@ -9,11 +9,9 @@ It involves 3 major components
 # How to compile
 Change directories to the src folder and type the following command:    
 
-javac -d ../bin "the package name"/*.java    
-or  
-javac -d ../bin data/*.java && javac -d ../bin app/*.java (if you want to compile the app and data package at the same time)
+javac -d ../bin "*the package name*"/*.java    
 
 # How to run(The SNIDApp)
 In the src type the following command  
 
-java -cp ../bin *package name*.*The java file's name*
+java -cp ../bin "*package name*"."*The java file's name*"
