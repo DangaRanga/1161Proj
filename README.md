@@ -11,7 +11,7 @@ Change directories to the src folder and type the following command:
 
 javac -d ../bin "*the package name*"/*.java    
 
-# How to run(The SNIDApp)
+# How to run/test with a main method
 In the src type the following command  
 
 java -cp ../bin "*package name*"."*The java file's name*"
