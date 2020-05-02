@@ -16,4 +16,4 @@ javac -d ../bin data/*.java && javac -d ../bin app/*.java (if you want to compil
 # How to run(The SNIDApp)
 In the src type the following command  
 
-java -cp ../bin app.SNIDApp
+java -cp ../bin *package name*.*The java file's name*
