@@ -41,12 +41,18 @@ public class SNIDApp {
         names.put(newCitizen.getId(),new Name(fName,mName,lName));
     }
 
-
+    public void registerDeath(String id,String causeOfDeath,String dateOfDeath,String placeOfDeath){
+        CivicDoc deathDetails = new DeathDoc(id, causeOfDeath, dateOfDeath, placeOfDeath);
+        Citizen person = records.get(idSearch(id));
+        person.addCivicPaper(deathDetails);
+    }
     /**
      * Method to register two Citizens' marriage.
      * <br>
      * The marriage between two individuals is recorded in the papers arraylist
-     * in the citizen clas 
+     * in the citizen class
+     * <br>
+     * Additionally, the bride's last name is set to the groom's last name
      * @param groomId The id of the groom
      * @param brideId The id of the bride
      * @param marriageDate The date of marriage
@@ -55,6 +61,8 @@ public class SNIDApp {
         CivicDoc marriageDocument = new MarriageDoc(groomId,brideId,marriageDate);
         Citizen groom = records.get(idSearch(groomId));
         Citizen bride = records.get(idSearch(brideId));
+        String groomLastName = names.get(groomId).getLastName();
+        bride.changeLastName(groomLastName);
         groom.addCivicPaper(marriageDocument);
         bride.addCivicPaper(marriageDocument);
     }

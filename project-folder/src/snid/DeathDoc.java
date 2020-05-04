@@ -1,17 +1,16 @@
 package snid;
 
-public class DeathDocs implements CivicDoc {
+public class DeathDoc implements CivicDoc {
     private static int deathCounter = 0;
     private String refNo;
     private String causeOfDeath;
     private String dateOfDeath;
     private String placeOfDeath;
 
-    public DeathDocs(String id,String causeOfDeath,String dateofdeath,String placeOfDeath ){
+    public DeathDoc(String id,String causeOfDeath,String dateofdeath,String placeOfDeath ){
         this.causeOfDeath = causeOfDeath;
         this.dateOfDeath = dateofdeath;
         this.placeOfDeath = placeOfDeath;
-        
         refNo = Integer.toString(++deathCounter);
     }
 
@@ -25,8 +24,8 @@ public class DeathDocs implements CivicDoc {
     }
     
     public String toString(){
-        return "Death Cert: #" + refNo + "\n" + "Cause:" + causeOfDeath + "\n" + "Date:" + dateOfDeath
-        + "Place of death:" + placeOfDeath; 
+        return "Death Cert: #" + refNo + "\n" + " Cause:" + causeOfDeath + "\n" + " Date: " + dateOfDeath
+        + " Place of death: " + placeOfDeath; 
         
     }
 }

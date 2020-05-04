@@ -9,7 +9,6 @@ package data;
 import java.io.*;
 
 // TODO Implement boolean to check if its the first time the file is being written to
-// Implement class for death certs and marriage certs
 
 public class SNIDDb {
     // Attributes for the SNIDDb class
