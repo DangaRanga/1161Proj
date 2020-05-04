@@ -92,6 +92,7 @@ public class SNIDApp {
         }
         return -1;
     }
+
     /**
      * Method to add parentData to a citizen
      * @param id The citizen's id
@@ -100,11 +101,14 @@ public class SNIDApp {
      */
     public void addParentData(String id,String fatherId, String motherId){
         int citizenPosition = idSearch(id);
-        // Insert if statment to check if mother and father position aren't negative
         int fatherPosition = idSearch(fatherId);
         int motherPosition = idSearch(motherId);
+        try{
         records.get(citizenPosition).setParent('F', records.get(fatherPosition));
         records.get(citizenPosition).setParent('M', records.get(motherPosition));
+        }catch(IndexOutOfBoundsException e){
+            System.out.println("Error, the person you are searching for does not exist");
+        }
     }
 
     /**
@@ -181,6 +185,40 @@ public class SNIDApp {
         Citizen person = records.get(idSearch(id));
         return person.getName() + "\n" + person.getAddress().toString();
     }
+    
+
+    public String search(String id){
+        if (records.get(idSearch(id)).equals(null)){
+            return "";
+        }else{
+            Citizen person = records.get(idSearch(id));
+            Name personName = names.get(id);
+            return id + "," + person.getGender() + "," +
+                personName.getFirstName() + "," + 
+                personName.getMiddleName() + "," +
+                personName.getLastName();
+        }
+    }
+    
+    public String[] search(String firstName,String lastName){
+        Collections.sort(records);
+        Citizen searchCiti = new Citizen('0', 0, firstName,null, lastName);
+        int index = Collections.binarySearch(records, searchCiti);
+        if (index < 0){
+            return new String[0];
+        }else{
+            Citizen person = records.get(index);
+            Name personName = names.get(person.getId());
+            String[] citiArr = {person.getId() + ",",person.getGender() + ",", 
+                            personName.getFirstName() + ",",
+                            personName.getMiddleName() + ",",
+                            personName.getLastName()
+                            };
+            return citiArr;
+        }
+    }
+
+
 
     // TODO Implement Unittesting with JUnit
     public static void main(String[]args){

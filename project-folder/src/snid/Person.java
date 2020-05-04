@@ -1,7 +1,10 @@
 package snid;
+
+import java.util.ArrayList;
+
 /**
  * @author Jason Gayle
- * @version 1.0 
+ * @version 1.0
  */
 public class Person{
     private static int idcounter;
@@ -11,7 +14,7 @@ public class Person{
     private char lifeStatus;
     private Person father;
     private Person mother;
-    private Biometric biodata;
+    private ArrayList<Biometric> biodata;
 
 
     /**
@@ -21,6 +24,7 @@ public class Person{
      * @param yearOfBirth the birth year of the person
      */
     public Person(char gender,int yearOfBirth){
+        biodata = new ArrayList<Biometric>();
         this.gender= gender;
         this.yearOfBirth = yearOfBirth;
         id = ++idcounter;
@@ -119,33 +123,29 @@ public class Person{
 
     // Biometric methods
 
-    /**
-     * Method stub for the match Biometric method
-     */
-    public  int match(Biometric other){
-        if (other == biodata){
-            return 0;
-        }else{
-            return 1;
-        }
-    }
 
     /**
      * Method stub for the addBiometric method
      */
     public void addBiometric(Biometric data){
-        biodata = data;
+       biodata.add(data);
     }
 
     /**
-     * Method stub for the getBiometric method
+     * Get Biometric method to return a Biometric object if the 
+     * object is found
+     * @param String The biometric tag
+     * @return A Biometric Object
+     * @throws NullPointerException if the desired Biometric does not exist
      */
     public Biometric getBiometric(String tag){
-       /* if (tag == biodata.getTag()){
-            return biodata;
-        }*/
-        return biodata;
-    }
+        for(Biometric data:biodata){
+            if(data.getTag().equals(tag)){
+                return data;
+            }
+        }
+        throw new NullPointerException("The specified Biometric object could not be found");
 
+    }
 }
 
