@@ -45,17 +45,18 @@ public class SNIDApp {
     /**
      * Method to register two Citizens' marriage.
      * <br>
-     * Currently, each Citizen's marriage data is stored in a HashMap
-     * With the marriage number as the key
+     * The marriage between two individuals is recorded in the papers arraylist
+     * in the citizen clas 
      * @param groomId The id of the groom
      * @param brideId The id of the bride
      * @param marriageDate The date of marriage
      */
     public void registerMarriage(String groomId, String brideId, String marriageDate){
-        // STUB for register marriage
-        String marriageNo = Integer.toString(++marriageCounter);
-        String[]marriageArr = {groomId,brideId,marriageDate};
-        marriages.put(marriageNo, marriageArr);
+        CivicDoc marriageDocument = new MarriageDoc(groomId,brideId,marriageDate);
+        Citizen groom = records.get(idSearch(groomId));
+        Citizen bride = records.get(idSearch(brideId));
+        groom.addCivicPaper(marriageDocument);
+        bride.addCivicPaper(marriageDocument);
     }
 
     /**

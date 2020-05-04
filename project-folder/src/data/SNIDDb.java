@@ -8,6 +8,8 @@ package data;
 
 import java.io.*;
 
+// TODO Implement boolean to check if its the first time the file is being written to
+// Implement class for death certs and marriage certs
 
 public class SNIDDb {
     // Attributes for the SNIDDb class
@@ -100,7 +102,7 @@ public class SNIDDb {
     * @param data This is a String array representing the data to be written to the file
     * 
     */
-    
+    // Do not insert reWrite into putNext()
    public void putNext(String[] data){
         reWrite();
         try{

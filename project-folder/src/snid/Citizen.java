@@ -1,4 +1,7 @@
 package snid;
+
+import java.util.ArrayList;
+
 /**
  * @author Jason Gayle
  * @version 1.0
@@ -6,7 +9,7 @@ package snid;
 public class Citizen extends Person implements Comparable<Citizen>{
     private Name name;
     private Address address;
-    private CivicDoc papers;
+    private ArrayList<CivicDoc> papers;
 
     /**
      * Constructor to initialise the attributes of a citizen
@@ -68,5 +71,9 @@ public class Citizen extends Person implements Comparable<Citizen>{
     public String getName(){
         return name.getLastName().toUpperCase() + ", " + name.getFirstName() + " "
                 + name.getMiddleName().charAt(0)+ ".";
+    }
+
+    public void addCivicPaper(CivicDoc paper){
+        papers.add(paper);
     }
 }
