@@ -10,9 +10,7 @@ import java.util.*;
 
 public class SNIDApp {
     private SNIDDb database;
-    private static int marriageCounter;
     private HashMap<String,Name> names;
-    private HashMap<String,String[]> marriages;
     private ArrayList<Citizen> records;
 
     /**
@@ -21,7 +19,6 @@ public class SNIDApp {
     public SNIDApp(String fileName,char delimiter){
         database = new SNIDDb(fileName,delimiter);
         records = new ArrayList<Citizen>();
-        marriages = new HashMap<String,String[]>();
         names = new HashMap<String,Name>(); // Temporary solution for the names problem
     }
 
@@ -199,7 +196,7 @@ public class SNIDApp {
                 personName.getLastName();
         }
     }
-    
+
     public String[] search(String firstName,String lastName){
         Collections.sort(records);
         Citizen searchCiti = new Citizen('0', 0, firstName,null, lastName);
@@ -217,6 +214,25 @@ public class SNIDApp {
             return citiArr;
         }
     }
+
+    public void addBiometric(String id,String data){
+        Citizen person = records.get(idSearch(id));
+        // To get the tag
+        if(data.charAt(0)=='D'){
+            Biometric DNA = new DNA(data.substring(1));
+            person.addBiometric(DNA);
+        }else{
+            Biometric fingerPrint = new FingerPrint(data.substring(1));
+            person.addBiometric(fingerPrint);
+        }
+
+    }
+   /* public String[] search(char tag,String value){
+        for(Citizen person:records){
+            Biometric biodata = person.getBiometric(tag)
+        }
+
+    } */
 
 
 

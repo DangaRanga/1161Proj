@@ -144,7 +144,7 @@ public class Person{
                 return data;
             }
         }
-        throw new NullPointerException("The specified Biometric object could not be found");
+        return null;
 
     }
 }
