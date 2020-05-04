@@ -85,33 +85,6 @@ public class SNIDApp {
         return -1;
     }
     /**
-     * Old method for searching an ID
-     * @author Mario Anckle
-     * @deprecated Replaced by idSearch
-     * @param id The id of the Citizen
-     * @return An integer representing the index the Citizen is at
-     */
-    @Deprecated
-    private int idSearchOld(String id){
-        Collections.sort(records);
-        int firstIndex = 0;
-        int lastIndex = records.size() -1;
-        while(firstIndex <= lastIndex) {
-            int middleIndex = (firstIndex + lastIndex) / 2;
-            if (Integer.parseInt(records.get(middleIndex).getId()) == Integer.parseInt(id)){
-                return middleIndex;
-            }
-            else if (Integer.parseInt(records.get(middleIndex).getId()) < Integer.parseInt(id)){
-                firstIndex = middleIndex + 1;
-            }
-            else if (Integer.parseInt(records.get(middleIndex).getId()) > Integer.parseInt(id)){
-                lastIndex = middleIndex - 1;
-            }
-        }
-        return -1;
-    }
-
-    /**
      * Method to add parentData to a citizen
      * @param id The citizen's id
      * @param fatherId The father's id
