@@ -26,4 +26,8 @@ public class FingerPrint implements Biometric{
             return 1;
         }
     }
+
+    public String toString(){
+        return getTag() + getValue();
+    }
 }
