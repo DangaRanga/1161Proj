@@ -14,7 +14,8 @@ public class SNIDApp {
     private ArrayList<Citizen> records;
 
     /**
-     * 
+     * @param fileName
+     * @param delimiter
      */
     public SNIDApp(String fileName,char delimiter){
         database = new SNIDDb(fileName,delimiter);
@@ -258,24 +259,33 @@ public class SNIDApp {
      */
 
     public String[] search(char tag,String value){
-        for(Citizen person:records){
+        for(int index =0;index<records.size();index++){
+            Citizen person = records.get(index);
             Biometric biodata = person.getBiometric(Character.toString(tag));
-            if(biodata.toString().equals(tag+value)){
-                Name personName = names.get(person.getId());
-                String[] citiArr = {person.getId() + ",",person.getGender() + ",", 
-                            personName.getFirstName() + ",",
-                            personName.getMiddleName() + ",",
-                            personName.getLastName()
-                            };
-            return citiArr; 
+           // System.out.println("Index: " + index + " Biodata: " + biodata);
+            try{
+                if(biodata.toString().equals(tag+value)){
+                    Name personName = names.get(person.getId());
+                    String[] citiArr = {person.getId(),
+                                Character.toString(person.getGender()), 
+                                personName.getFirstName(),
+                                personName.getMiddleName(),
+                                personName.getLastName()
+                                };
+                    return citiArr; 
+                }
+            }catch(NullPointerException e){
             }
         }
         return new String[0]; // Returns empty array if the person isn't found
 
     }
-    
-    public void shutdown(){
 
+
+    public void shutdown(){
+        for(Citizen citizen:records){
+
+        }
     }
 
 
@@ -287,6 +297,17 @@ public class SNIDApp {
         test.registerBirth('M',999,"Steve","Something","Jobs");
         test.registerBirth('F',420,"Martha","Something","Gates");
         test.addParentData("1", "2", "3");
+        test.addBiometric("1", "D420");
+        test.addBiometric("2","F420");
+        test.addBiometric("3","F320");
+        System.out.println(test.search("2"));
+
+        Citizen person2 = test.records.get(test.idSearch("2"));
+        System.out.println(person2.getBiometric("F"));
+        System.out.println(Arrays.toString(test.search('F',"520")));
+        System.out.println(Arrays.toString(test.search('D',"420")));
+      //  System.out.println("Biometric: " + test.getBiometric("1","D"));
+    
         System.out.println("Father: " + test.getFather("1"));
         System.out.println("Mother: " + test.getMother("1"));
 
