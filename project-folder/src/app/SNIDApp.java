@@ -183,7 +183,9 @@ public class SNIDApp {
         return person.getName() + "\n" + person.getAddress().toString();
     }
     
-
+    /**
+     * 
+     */
     public String search(String id){
         if (records.get(idSearch(id)).equals(null)){
             return "";
@@ -196,6 +198,10 @@ public class SNIDApp {
                 personName.getLastName();
         }
     }
+
+    /**
+     * 
+     */
 
     public String[] search(String firstName,String lastName){
         Collections.sort(records);
@@ -215,6 +221,12 @@ public class SNIDApp {
         }
     }
 
+    /**
+     * 
+     * @param id
+     * @param data
+     */
+
     public void addBiometric(String id,String data){
         Citizen person = records.get(idSearch(id));
         // To get the tag
@@ -227,12 +239,44 @@ public class SNIDApp {
         }
 
     }
-   /* public String[] search(char tag,String value){
-        for(Citizen person:records){
-            Biometric biodata = person.getBiometric(tag)
-        }
 
-    } */
+    /**
+     * 
+     */
+
+    public String getBiometric(String id,String tag){
+        Citizen person = records.get(idSearch(id));
+        return person.getBiometric(tag).toString();
+
+    }
+
+    /**
+     * 
+     * @param tag
+     * @param value
+     * @return
+     */
+
+    public String[] search(char tag,String value){
+        for(Citizen person:records){
+            Biometric biodata = person.getBiometric(Character.toString(tag));
+            if(biodata.toString().equals(tag+value)){
+                Name personName = names.get(person.getId());
+                String[] citiArr = {person.getId() + ",",person.getGender() + ",", 
+                            personName.getFirstName() + ",",
+                            personName.getMiddleName() + ",",
+                            personName.getLastName()
+                            };
+            return citiArr; 
+            }
+        }
+        return new String[0]; // Returns empty array if the person isn't found
+
+    }
+    
+    public void shutdown(){
+
+    }
 
 
 
