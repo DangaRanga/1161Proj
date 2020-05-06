@@ -262,7 +262,7 @@ public class SNIDApp {
         for(int index =0;index<records.size();index++){
             Citizen person = records.get(index);
             Biometric biodata = person.getBiometric(Character.toString(tag));
-           // System.out.println("Index: " + index + " Biodata: " + biodata);
+
             try{
                 if(biodata.toString().equals(tag+value)){
                     Name personName = names.get(person.getId());
@@ -275,6 +275,7 @@ public class SNIDApp {
                     return citiArr; 
                 }
             }catch(NullPointerException e){
+                // If some records aren't set a null pointer exception will be thrown
             }
         }
         return new String[0]; // Returns empty array if the person isn't found
