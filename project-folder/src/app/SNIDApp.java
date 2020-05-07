@@ -40,7 +40,7 @@ public class SNIDApp {
     }
 
     public void registerDeath(String id,String causeOfDeath,String dateOfDeath,String placeOfDeath){
-        CivicDoc deathDetails = new DeathDoc(id, causeOfDeath, dateOfDeath, placeOfDeath);
+        CivicDoc deathDetails = new DeathCertificate(id, causeOfDeath, dateOfDeath, placeOfDeath);
         Citizen person = records.get(idSearch(id));
         person.addCivicPaper(deathDetails);
     }
@@ -56,7 +56,7 @@ public class SNIDApp {
      * @param marriageDate The date of marriage
      */
     public void registerMarriage(String groomId, String brideId, String marriageDate){
-        CivicDoc marriageDocument = new MarriageDoc(groomId,brideId,marriageDate);
+        CivicDoc marriageDocument = new MarriageCertificate(groomId,brideId,marriageDate);
         Citizen groom = records.get(idSearch(groomId));
         Citizen bride = records.get(idSearch(brideId));
         String groomLastName = names.get(groomId).getLastName();
@@ -181,7 +181,17 @@ public class SNIDApp {
      */
     public String mailingLabel(String id){
         Citizen person = records.get(idSearch(id));
-        return person.getName() + "\n" + person.getAddress().toString();
+        Name personName = names.get(id);
+        String address;
+        try{
+            address = person.getAddress().toString();
+        }catch(NullPointerException e){
+            System.out.println("An address had not been set");
+            address = "";
+        }
+        return personName.getLastName().toUpperCase() + "," +
+                personName.getFirstName() + " " + personName.getLastName() +
+                "\n" + address;
     }
     
     /**
@@ -294,7 +304,7 @@ public class SNIDApp {
     // TODO Implement Unittesting with JUnit
     public static void main(String[]args){
         SNIDApp test = new SNIDApp("test.txt",',');
-        test.registerBirth('M',1000,"yes", "no", "why"); // id = 1
+        test.registerBirth('M',1000,"Jason", "Andre", "Gayle"); // id = 1
         test.registerBirth('M',999,"Steve","Something","Jobs");
         test.registerBirth('F',420,"Martha","Something","Gates");
         test.addParentData("1", "2", "3");
@@ -307,6 +317,7 @@ public class SNIDApp {
         System.out.println(person2.getBiometric("F"));
         System.out.println(Arrays.toString(test.search('F',"520")));
         System.out.println(Arrays.toString(test.search('D',"420")));
+        System.out.println(test.mailingLabel("1"));
       //  System.out.println("Biometric: " + test.getBiometric("1","D"));
     
         System.out.println("Father: " + test.getFather("1"));

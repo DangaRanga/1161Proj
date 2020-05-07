@@ -1,13 +1,13 @@
 package snid;
 
-public class DeathDoc implements CivicDoc {
+public class DeathCertificate implements CivicDoc {
     private static int deathCounter = 0;
     private String refNo;
     private String causeOfDeath;
     private String dateOfDeath;
     private String placeOfDeath;
 
-    public DeathDoc(String id,String causeOfDeath,String dateofdeath,String placeOfDeath ){
+    public DeathCertificate(String id,String causeOfDeath,String dateofdeath,String placeOfDeath ){
         this.causeOfDeath = causeOfDeath;
         this.dateOfDeath = dateofdeath;
         this.placeOfDeath = placeOfDeath;
