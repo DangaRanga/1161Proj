@@ -113,6 +113,20 @@ public class Person{
         return Integer.toString(id);
     }
 
+    private boolean isValidId(String id){  
+        try{
+            Integer.parseInt(id);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        } 
+    }
+    public void setId(String id){
+      if(isValidId(id)){
+        this.id = Integer.parseInt(id);
+      }
+    }
+
     /**
      * Accessor method to get the year of birth of a person
      * @return An integer representing an individual's year of birth

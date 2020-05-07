@@ -26,6 +26,23 @@ public class Citizen extends Person implements Comparable<Citizen>{
         name = new Name(firstName,middleName,lastName);
     }
 
+    public Citizen(String id,String firstName, String middleName,String lastName,
+                    char gender,int yearOfBirth,String lifeStatus,
+                    String addressOne,String addressTwo,String addressThree,
+                    String addressFour,String addressFive,String motherId,String fatherId){
+        super(gender,yearOfBirth);
+        if(lifeStatus.equals("Alive")){
+            super.setLifeStatus(0);
+        }else if(lifeStatus.equals("Deceased")){
+            super.setLifeStatus(1);
+        }
+        setAddress(new Address(addressOne + "|" + addressTwo + "|" + 
+                                addressThree + "|" + addressFour+"|"+
+                                addressFive));
+        name = new Name(firstName,middleName,lastName);
+        super.setId(id);
+    }
+
     /**
      * Accessor method to get the ID of a Citizen
      * @return A String representing the Citizen's ID number
