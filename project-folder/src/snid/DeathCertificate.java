@@ -20,7 +20,7 @@ public class DeathCertificate implements CivicDoc {
      * @return A string representing the reference number
      */
     public String getRefNo(){
-        return refNo;
+        return "D" + refNo;
     }
     
     public String toString(){

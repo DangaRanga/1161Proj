@@ -16,7 +16,7 @@ public class MarriageCertificate implements CivicDoc{
 
     @Override
     public String getRefNo(){
-        return refNo;
+        return "M" + refNo;
     }
     /**
      * toString method for the MarriageDoc class

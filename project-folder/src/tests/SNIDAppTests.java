@@ -1,4 +1,4 @@
-package tests;
+/*package tests;
 import data.*;
 
 import org.junit.Test;
@@ -8,8 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 
 import app.*;
-
-public class SNIDAppTests {
+*/
+/* public class SNIDAppTests {
     SNIDApp test;
     @Before
     public void init(){
@@ -19,10 +19,6 @@ public class SNIDAppTests {
         test.registerBirth('F',420,"Martha","Something","Stevens");
         test.addParentData("1", "2", "3");
     }
-   /* @Test
-    public void test_getMother(){
-        assertEquals("3,Martha,Something,Stevens",test.getMother("1"));
-    } */
     @Test
     public void test_search(){
         SNIDApp test2 = new SNIDApp("test.txt",',');
@@ -51,4 +47,4 @@ public class SNIDAppTests {
         System.out.println(test.getFather("1"));
         System.out.println(test.getMother("1"));
     }
-}
+} */

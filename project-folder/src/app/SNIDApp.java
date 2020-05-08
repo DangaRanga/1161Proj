@@ -14,17 +14,23 @@ public class SNIDApp {
     private ArrayList<Citizen> records;
 
     /**
+     * constructor for SNIDApp class
+     * <br>
      * @param fileName
      * @param delimiter
      */
     public SNIDApp(String fileName,char delimiter){
         database = new SNIDDb(fileName,delimiter);
         records = new ArrayList<Citizen>();
-        names = new HashMap<String,Name>(); // Temporary solution for the names problem
+        names = new HashMap<String,Name>();
     }
 
     /**
      * Method to register the birth of a Citizen
+     * <br>
+     * creates a new citizen obj for when they are born
+     * sets thier life status to '0' (alive)
+     * adds the new citizen to the records arrayList
      * @param gender
      * @param yob
      * @param fName
@@ -38,10 +44,25 @@ public class SNIDApp {
         // Temporary Solution to get the names, by storing the name with an id
         names.put(newCitizen.getId(),new Name(fName,mName,lName));
     }
-
+    /**
+     * method to register death of a person
+     * <br>
+     * a CivicDoc is created theat contains the information about the 
+     * persons death
+     * <br>
+     * retreives the Citizen information form records by the use of 
+     * thier id
+     * <br>
+     * then adds the deathDeatails to persons Civicdoc
+     * @param id citizen id
+     * @param causeOfDeath how they died
+     * @param dateOfDeath the date in which they died
+     * @param placeOfDeath the place they were pronouced dead
+     */
     public void registerDeath(String id,String causeOfDeath,String dateOfDeath,String placeOfDeath){
         CivicDoc deathDetails = new DeathCertificate(id, causeOfDeath, dateOfDeath, placeOfDeath);
         Citizen person = records.get(idSearch(id));
+        person.setLifeStatus(1);
         person.addCivicPaper(deathDetails);
     }
     /**
@@ -59,14 +80,21 @@ public class SNIDApp {
         CivicDoc marriageDocument = new MarriageCertificate(groomId,brideId,marriageDate);
         Citizen groom = records.get(idSearch(groomId));
         Citizen bride = records.get(idSearch(brideId));
+        Name brideName = names.get(brideId);
         String groomLastName = names.get(groomId).getLastName();
-        bride.changeLastName(groomLastName);
+        System.out.println(groomLastName);
         groom.addCivicPaper(marriageDocument);
         bride.addCivicPaper(marriageDocument);
+        bride.changeLastName(groomLastName);
+        brideName.setLastName(groomLastName); // Setting the name in the hashMap
     }
 
     /**
      * Private method to search for the Id of a citizen using a binary search
+     * <br>
+     * the list is sorted then the id is compared againsit others in the list
+     * this works by dividing the list into equal halfs and compares the
+     * wanted id with the other in the middle of list each iteration
      * @author Mario Anckle
      * @author Jason Gayle
      * @param id A String representing the id of the Citizen being searched
@@ -93,6 +121,12 @@ public class SNIDApp {
 
     /**
      * Method to add parentData to a citizen
+     * <br>
+     * finds the index of the citizen and their parent(s) id and
+     * stores them as obj
+     * <br>
+     * set the parent of the citizen if the id is found and updates
+     * the citezen records, else thorws an IndexOutOfBoundsException
      * @param id The citizen's id
      * @param fatherId The father's id
      * @param motherId The mother's id
@@ -102,8 +136,8 @@ public class SNIDApp {
         int fatherPosition = idSearch(fatherId);
         int motherPosition = idSearch(motherId);
         try{
-        records.get(citizenPosition).setParent('F', records.get(fatherPosition));
-        records.get(citizenPosition).setParent('M', records.get(motherPosition));
+            records.get(citizenPosition).setParent('F', records.get(fatherPosition));
+            records.get(citizenPosition).setParent('M', records.get(motherPosition));
         }catch(IndexOutOfBoundsException e){
             System.out.println("Error, the person you are searching for does not exist");
         }
@@ -111,6 +145,9 @@ public class SNIDApp {
 
     /**
      * Method to get the Citizen's father.
+     * <br>
+     * get father's position using the idSearch method 
+     * and returns  the father's details if his ID exsits
      * @param id The id of the Citizen
      * @return A formatted String representing the father's details
      */
@@ -130,6 +167,9 @@ public class SNIDApp {
 
     /**
      * Method to get the Citizen's mother
+     * get mother's position using the idSearch method 
+     * and returns  the mother's details if his ID exsits
+     * 
      * @param id The id of the Citizen
      * @return A formatted String representing the Citizen's mother's details
      */
@@ -195,7 +235,13 @@ public class SNIDApp {
     }
     
     /**
-     * 
+     * search method 
+     * <br>
+     * checks to see if the id exist if not the returns and empty string
+     * if id is found, it retives the persons info from records arrayList
+     * @param id
+     * @return A formatted String containing individuals ID, gender and
+     * full name
      */
     public String search(String id){
         if (records.get(idSearch(id)).equals(null)){
@@ -211,9 +257,15 @@ public class SNIDApp {
     }
 
     /**
-     * 
+     * search by name method
+     * <br>
+     * binary search used to find citezen from list with the name 
+     * entered  
+     * @param firstName
+     * @param lastName
+     * @return A a string list that contains the persons ID, gender
+     * and full name
      */
-
     public String[] search(String firstName,String lastName){
         Collections.sort(records);
         Citizen searchCiti = new Citizen('0', 0, firstName,null, lastName);
@@ -291,37 +343,118 @@ public class SNIDApp {
         return new String[0]; // Returns empty array if the person isn't found
 
     }
+    /**
+     * private method used to split address
+     * <br>
+     * takes in the address param of and splits it using 
+     * the split method and returns it in the toString method form the
+     * Address class
+     * <br>
+     * loops through the address if the index is not equal to the length of the
+     * array-1 it creates the address string and add ',' in place of the missing 
+     * info else just adds everything to the address string
+     * @param address
+     * @return An address string containg all parts of the address splited into parts
+     */
+    private String splitAddress(Address address){
+        String[] addressArr;
+        try{
+            addressArr = address.toString().split("\n");
+        }catch(NullPointerException e){
+            System.out.println("This person does not have an address");
+            return "";
+        }
+        String addressString = "";
+        for(int index=0;index<addressArr.length;index++){
+            if(index != (addressArr.length-1) ){
+                addressString += addressArr[index] + ",";
+            }else{
+                addressString += addressArr[index];
+            }     
+        }
+        return addressString;
+    }
 
+    /**
+     * Private helper method to retrieve the parent ids of an individual for writing
+     * if the parent does not exist, an empty string will be set in place
+     * @param writeList The arrayList where the other objects to be written to the file
+     * are being set
+     * @param citizen The citizen who's parents are being retrieved
+     */
 
+    private void putParentIds(ArrayList<String> writeList, Citizen citizen){
+        Citizen father = (Citizen)citizen.getParent('F');
+        Citizen mother = (Citizen)citizen.getParent('M');
+        if(father == null){
+            writeList.add("");
+        }else{
+            writeList.add(father.getId());
+        }
+        if(mother == null){
+            writeList.add("");
+        }else{
+            writeList.add(mother.getId());
+        }
+    }
+    /**
+     * private method to wirte citizen information to a list
+     * The primary method for building the list to be written to the file
+     * @param citizen
+     * @return An array representing one line to be written to the file
+     */
+    private String[] buildList(Citizen citizen){
+        ArrayList<String> writeList = new ArrayList<String>();
+        String id = citizen.getId();
+        Name citizenName = names.get(id);
+        writeList.add(id);
+        writeList.add(citizenName.getFirstName());
+        writeList.add(citizenName.getMiddleName());
+        writeList.add(citizenName.getLastName());
+        writeList.add(Character.toString(citizen.getGender()));
+        writeList.add(Integer.toString(citizen.getYOB()));
+        if(citizen.getLifeStatus()=='A'){
+            writeList.add("Alive");
+        }else{
+            writeList.add("Dead");
+        }
+        writeList.add(splitAddress(citizen.getAddress()));
+        putParentIds(writeList,citizen);
+        String[] writeArr = new String[writeList.size()];
+        return writeList.toArray(writeArr);
+    }
+    
     public void shutdown(){
         for(Citizen citizen:records){
-
+            database.putNext(buildList(citizen));
         }
+
+
     }
 
 
 
-    // TODO Implement Unittesting with JUnit
     public static void main(String[]args){
-        SNIDApp test = new SNIDApp("test.txt",',');
+        SNIDApp test = new SNIDApp("Citizens.txt",',');
         test.registerBirth('M',1000,"Jason", "Andre", "Gayle"); // id = 1
         test.registerBirth('M',999,"Steve","Something","Jobs");
+        test.registerDeath("2", "Cancer", "I forgot", "A hospital");
         test.registerBirth('F',420,"Martha","Something","Gates");
-        test.addParentData("1", "2", "3");
-        test.addBiometric("1", "D420");
-        test.addBiometric("2","F420");
-        test.addBiometric("3","F320");
-        System.out.println(test.search("2"));
+        test.registerBirth('M',2000,"Mario","Alucard","Anckle"); // id = 4
+        test.registerBirth('F',2000,"Jahnika","Something","Blair"); // id = 5
+        test.registerMarriage("4","5","5/7/2020");
+        test.updateAddress("1", "somestreet", "sometown", "someparish", "somecountry");
+        test.updateAddress("2", "somestreet", "sometown", "someparish", "somecountry");
+        test.updateAddress("3", "somestreet", "sometown", "someparish", "somecountry");
+        test.addParentData("1", "4", "5");
+        test.shutdown();
+        /* System.out.println(test.search("2"));
 
         Citizen person2 = test.records.get(test.idSearch("2"));
         System.out.println(person2.getBiometric("F"));
         System.out.println(Arrays.toString(test.search('F',"520")));
         System.out.println(Arrays.toString(test.search('D',"420")));
-        System.out.println(test.mailingLabel("1"));
-      //  System.out.println("Biometric: " + test.getBiometric("1","D"));
-    
-        System.out.println("Father: " + test.getFather("1"));
-        System.out.println("Mother: " + test.getMother("1"));
+        System.out.println(test.mailingLabel("1")); */
 
 
 

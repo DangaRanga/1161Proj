@@ -67,7 +67,6 @@ public class Person{
         }
     }
 
-    // TODO - Insert error handling for setParent
 
     /**
      * Setter method to set the parent
@@ -86,7 +85,6 @@ public class Person{
         }
     }
 
-    // TODO - Insert error handling for getParent
 
     /**
      * Accessor method to retrieve the parent
@@ -124,6 +122,8 @@ public class Person{
     public void setId(String id){
       if(isValidId(id)){
         this.id = Integer.parseInt(id);
+      }else{
+          throw new NumberFormatException(String.format("Invalid id %s entered",id));
       }
     }
 
