@@ -24,6 +24,7 @@ public class Citizen extends Person implements Comparable<Citizen>{
     
         super(gender, yearOfBirth);
         name = new Name(firstName,middleName,lastName);
+        papers = new ArrayList<CivicDoc>();
     }
 
     public Citizen(String id,String firstName, String middleName,String lastName,
@@ -89,8 +90,25 @@ public class Citizen extends Person implements Comparable<Citizen>{
         return name.getLastName().toUpperCase() + ", " + name.getFirstName() + " "
                 + name.getMiddleName().charAt(0)+ ".";
     }
-
+    /**
+     * Method to add a civic paper to a citizen
+     * @param paper The civic doc to be added to a citizen's list of papers
+     */
     public void addCivicPaper(CivicDoc paper){
         papers.add(paper);
+    }
+
+    /**
+     * Method to get a civic doc from a Citizen
+     * @param refNo The reference number for the desired paper
+     * @return The desired civic document if its found, and null if the civic doc does not exist
+     */
+    public CivicDoc getCivicDoc(String refNo){
+        for(CivicDoc doc:papers){
+            if (doc.getRefNo().equals(refNo)){
+                return doc;
+            }
+        }
+        return null;
     }
 }

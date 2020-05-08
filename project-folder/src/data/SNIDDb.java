@@ -32,6 +32,7 @@ public class SNIDDb {
             bWriter = new BufferedWriter(new FileWriter(fileName,true));
         }catch(FileNotFoundException e){
             System.out.println("The file could not be found");
+            System.out.println("Creating the file...");
             File file = new File(fileName);
             try{
             file.createNewFile();

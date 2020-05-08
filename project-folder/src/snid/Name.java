@@ -51,7 +51,7 @@ public class Name {
      * @param newLName The new last name to be set
      */
     public void setLastName(String newLName){
-        ln = newLName;
+        this.ln = newLName;
     }
 
     /**
@@ -72,5 +72,4 @@ public class Name {
                 name.getMiddleName().equals(mn) &&
                 name.getLastName().equals(ln));
     }
-
 }
