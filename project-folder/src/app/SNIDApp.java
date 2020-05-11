@@ -244,15 +244,20 @@ public class SNIDApp {
      * full name
      */
     public String search(String id){
-        if (records.get(idSearch(id)).equals(null)){
+        int index = idSearch(id);
+        if (index < 0 ){
             return "";
         }else{
-            Citizen person = records.get(idSearch(id));
-            Name personName = names.get(id);
-            return id + "," + person.getGender() + "," +
-                personName.getFirstName() + "," + 
-                personName.getMiddleName() + "," +
-                personName.getLastName();
+            if (records.get(index).equals(null)){
+                return "";
+            }else{
+                Citizen person = records.get(idSearch(id));
+                Name personName = names.get(id);
+                return id + "," + person.getGender() + "," +
+                    personName.getFirstName() + "," + 
+                    personName.getMiddleName() + "," +
+                    personName.getLastName();
+            }
         }
     }
 

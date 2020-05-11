@@ -7,6 +7,7 @@ package data;
  */
 
 import java.io.*;
+import java.util.Arrays;
 
 // TODO Implement boolean to check if its the first time the file is being written to
 
@@ -16,6 +17,7 @@ public class SNIDDb {
     private String fileName;
     private BufferedReader bReader;
     private BufferedWriter bWriter;
+    private String line;
 
     /**
      * Constructor for the SNIDDb class
@@ -55,7 +57,8 @@ public class SNIDDb {
      */
 
     public boolean hasNext() throws IOException{
-        return bReader.readLine() != null;
+        line = bReader.readLine();
+        return line != null;
     }
 
     /**
@@ -68,7 +71,7 @@ public class SNIDDb {
      */
     public String[] getNext() throws IOException{
         if(hasNext()){
-            String line = bReader.readLine();
+            // String line = bReader.readLine();
             return line.split(Character.toString(delimiter));
         }else{
             System.out.println("The file is empty");
@@ -127,5 +130,16 @@ public class SNIDDb {
                 }
             }
         }
+   }
+   public static void main(String[]args){
+       SNIDDb test = new SNIDDb("Citizens.txt",',');
+       try{
+        System.out.println(Arrays.toString(test.getNext()));
+        System.out.println(Arrays.toString(test.getNext()));
+        System.out.println(Arrays.toString(test.getNext()));
+       }catch(IOException e){
+           System.out.println(e.getMessage());
+
+       }
    }
 }
