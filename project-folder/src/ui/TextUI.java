@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 import app.*;
 import data.*;
@@ -123,6 +124,14 @@ public class TextUI {
                         System.out.println("The Citizen could not be found in the database");
                     }
                     break;
+                case("2"):
+                    System.out.println("Enter the first name of the Citizen: ");
+                    String firstName = scan.next();
+                    System.out.println("Enter the last name of the Citizen: ");
+                    String lastName = scan.next();
+                    String[] citizenDetails = appObj.search(firstName, lastName);
+                    System.out.println("The citizen's details goes as follows in an array format: " +
+                        Arrays.toString(citizenDetails)); 
                 case("X"):
                     searchBool = false;
                     break;
