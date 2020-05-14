@@ -20,6 +20,23 @@ public class TextUI {
         } 
     }
     
+    private int validYob(){
+        boolean valid;
+        int yob;
+        do{
+            System.out.println("Enter the person's year of birth: ");
+            String yearEntry = scan.next();
+            if(isParseable(yearEntry)){
+                yob = Integer.parseInt(yearEntry);
+                valid = true;
+            }else{
+                yob=0;
+                valid=false;
+            }
+        }while(!valid);
+        return yob;
+        
+    }
     /**
      * Private helper method when the option to register a birth has been selected
      * <br> 
@@ -38,9 +55,9 @@ public class TextUI {
             // Ternary operator that returns true if the gender is M or F and false otherwise
             valid = gender == 'M' || gender == 'F' ? true : false;
         }while(!valid);
-        System.out.println("Enter the person's year of birth: ");
+       
         // Validating the year of Birth
-        int yob = scan.nextInt();
+        int yob = validYob();
         System.out.println("Enter the person's first name");
         String firstName = scan.next();
         System.out.println("Enter the person's middle name");
@@ -59,7 +76,7 @@ public class TextUI {
         System.out.println("Enter the person's mother's id");
         String motherId = scan.next();
         appObj.addParentData(id, fatherId, motherId);
-        System.out.println("Parent details have been sucessfully added...");
+        System.out.println("Updating parent details...");
     }
     
     private void updateCitizenAddress(SNIDApp appObj){

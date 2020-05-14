@@ -119,6 +119,9 @@ public class SNIDApp {
         return -1;
     }
 
+    private boolean recordExists(int index){
+        return index >= 0;
+    }
     /**
      * Method to add parentData to a citizen
      * <br>
@@ -134,12 +137,17 @@ public class SNIDApp {
     public void addParentData(String id,String fatherId, String motherId){
         int citizenPosition = idSearch(id);
         int fatherPosition = idSearch(fatherId);
-        int motherPosition = idSearch(motherId);
-        try{
+        if (recordExists(fatherPosition)){
             records.get(citizenPosition).setParent('F', records.get(fatherPosition));
+        }else{
+            System.out.println(String.format("There are no existing records for the id %s",(fatherId)));
+        }
+        
+        int motherPosition = idSearch(motherId);
+        if(recordExists(motherPosition)){
             records.get(citizenPosition).setParent('M', records.get(motherPosition));
-        }catch(IndexOutOfBoundsException e){
-            System.out.println("Error, the person you are searching for does not exist");
+        }else{
+            System.out.println(String.format("There are no existing records for the id %s",(motherId)));
         }
     }
 
@@ -176,6 +184,7 @@ public class SNIDApp {
 
     public String getMother(String id){
         int citizenPosition = idSearch(id);
+        //if (recordExists(citizenPosition){
         // Casting mother as a Citizen, since a Person doesn't have a name
         Citizen mother =  (Citizen)records.get(citizenPosition).getParent('M');
         if(mother!=null){
@@ -261,28 +270,41 @@ public class SNIDApp {
         }
     }
 
+
+    private int nameSearch(String firstName,String lastName){
+        Collections.sort(records);
+        Citizen searchCiti = new Citizen('0', 0, firstName,null, lastName);
+        int index = Collections.binarySearch(records, searchCiti,new Comparator<Citizen>(){
+            public int compare(Citizen citi1, Citizen citi2){
+                return citi1.getNameObj().getFirstName().compareTo(citi2.getNameObj().getFirstName());
+            }
+        });
+    
+        System.out.println(Integer.toString(index));
+        return index;
+    }
     /**
      * search by name method
      * <br>
-     * binary search used to find citezen from list with the name 
-     * entered  
+     * Binary search from nameSearch() is used to find citezen 
+     * from list with the name entered  
      * @param firstName
      * @param lastName
+     * {@link #nameSearch(String, String) nameSearch}
      * @return A a string list that contains the persons ID, gender
      * and full name
      */
     public String[] search(String firstName,String lastName){
-        Collections.sort(records);
-        Citizen searchCiti = new Citizen('0', 0, firstName,null, lastName);
-        int index = Collections.binarySearch(records, searchCiti);
+        int index = nameSearch(firstName, lastName);
         if (index < 0){
             return new String[0];
         }else{
             Citizen person = records.get(index);
             Name personName = names.get(person.getId());
-            String[] citiArr = {person.getId() + ",",person.getGender() + ",", 
-                            personName.getFirstName() + ",",
-                            personName.getMiddleName() + ",",
+            String[] citiArr = {person.getId(), 
+                            Character.toString(person.getGender()), 
+                            personName.getFirstName(),
+                            personName.getMiddleName(),
                             personName.getLastName()
                             };
             return citiArr;
@@ -309,9 +331,10 @@ public class SNIDApp {
     }
 
     /**
-     * 
+     * @deprecated
+     * @since v1.1
      */
-
+    @Deprecated
     public String getBiometric(String id,String tag){
         Citizen person = records.get(idSearch(id));
         return person.getBiometric(tag).toString();
@@ -319,12 +342,12 @@ public class SNIDApp {
     }
 
     /**
-     * 
+     * @deprecated
      * @param tag
      * @param value
      * @return
      */
-
+    @Deprecated
     public String[] search(char tag,String value){
         for(int index =0;index<records.size();index++){
             Citizen person = records.get(index);
@@ -446,13 +469,15 @@ public class SNIDApp {
         test.registerDeath("2", "Cancer", "I forgot", "A hospital");
         test.registerBirth('F',420,"Martha","Something","Gates");
         test.registerBirth('M',2000,"Mario","Alucard","Anckle"); // id = 4
+        System.out.println(Arrays.toString(test.search("Mario","Anckle")));
+        /*
         test.registerBirth('F',2000,"Jahnika","Something","Blair"); // id = 5
         test.registerMarriage("4","5","5/7/2020");
         test.updateAddress("1", "somestreet", "sometown", "someparish", "somecountry");
         test.updateAddress("2", "somestreet", "sometown", "someparish", "somecountry");
         test.updateAddress("3", "somestreet", "sometown", "someparish", "somecountry");
         test.addParentData("1", "4", "5");
-        test.shutdown();
+        test.shutdown(); */
         /* System.out.println(test.search("2"));
 
         Citizen person2 = test.records.get(test.idSearch("2"));

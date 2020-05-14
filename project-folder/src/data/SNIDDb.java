@@ -89,7 +89,7 @@ public class SNIDDb {
        try{
            // Closing the buffered writer opened in the constructor
             bWriter.close();
-            bWriter = new BufferedWriter(new FileWriter(fileName,true));
+            bWriter = new BufferedWriter(new FileWriter(fileName));
         }catch(FileNotFoundException e){
             System.out.println("The file could not be found");
         }catch(IOException e){
@@ -107,8 +107,9 @@ public class SNIDDb {
     */
     // Do not insert reWrite into putNext()
    public void putNext(String[] data){
-        reWrite();
+        // reWrite();
         try{
+            bWriter = new BufferedWriter(new FileWriter(fileName,true));
             for(int index = 0; index < data.length; index++){
                 if(index!=(data.length-1)){
                     bWriter.write(data[index]+delimiter);

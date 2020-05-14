@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"data","l":"SNIDDb"}]
+typeSearchIndex = [{"p":"snid","l":"Address"},{"l":"All Classes","url":"allclasses-index.html"},{"p":"snid","l":"Biometric"},{"p":"snid","l":"Citizen"},{"p":"snid","l":"CivicDoc"},{"p":"snid","l":"DeathCertificate"},{"p":"snid","l":"DNA"},{"p":"snid","l":"FingerPrint"},{"p":"snid","l":"MarriageCertificate"},{"p":"snid","l":"Name"},{"p":"snid","l":"Person"}]

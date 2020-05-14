@@ -1,6 +1,0 @@
-1,Jason,Andre,Gayle,M,1000,Alive,somestreet,sometown,someparish,somecountry,4,5
-2,Steve,Something,Jobs,M,999,Dead,somestreet,sometown,someparish,somecountry,,
-3,Martha,Something,Gates,F,420,Alive,somestreet,sometown,someparish,somecountry,,
-4,Mario,Alucard,Anckle,M,2000,Alive,,,
-5,Jahnika,Something,Anckle,F,2000,Alive,,,
-

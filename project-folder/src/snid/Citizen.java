@@ -90,6 +90,9 @@ public class Citizen extends Person implements Comparable<Citizen>{
         return name.getLastName().toUpperCase() + ", " + name.getFirstName() + " "
                 + name.getMiddleName().charAt(0)+ ".";
     }
+    public Name getNameObj(){
+        return name;
+    }
     /**
      * Method to add a civic paper to a citizen
      * @param paper The civic doc to be added to a citizen's list of papers
