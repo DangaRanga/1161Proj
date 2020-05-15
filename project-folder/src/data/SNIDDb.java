@@ -18,6 +18,7 @@ public class SNIDDb {
     private BufferedReader bReader;
     private BufferedWriter bWriter;
     private String line;
+    private File file;
 
     /**
      * Constructor for the SNIDDb class
@@ -30,14 +31,15 @@ public class SNIDDb {
         this.delimiter=delimiter;
         this.fileName=fileName;
         try{
-            bReader = new BufferedReader(new FileReader(fileName));
+            file = new File(fileName);
+            bReader = new BufferedReader(new FileReader(file));
             bWriter = new BufferedWriter(new FileWriter(fileName,true));
         }catch(FileNotFoundException e){
             System.out.println("The file could not be found");
             System.out.println("Creating the file...");
-            File file = new File(fileName);
+            file = new File(fileName);
             try{
-            file.createNewFile();
+                file.createNewFile();
             }catch(IOException f){
                 System.out.println("An unexpected IOException has occured while making file");
             }
@@ -46,6 +48,10 @@ public class SNIDDb {
         }
     }
 
+
+    public boolean isEmptyFile(){
+        return file.length() == 0;
+    }
     /**
      * Method to check if the next line in the file can be read
      * This works by using the readLine method in the BufferedReader Class
@@ -69,16 +75,9 @@ public class SNIDDb {
      * This works by using the hasNext() method and the readLine() method
      * fromthe buffered reader clas to check if the line can be retrieved.
      * @return A string array representing a line in the file
-     * @throws IOException Which is later caught in the SNIDDApp
      */
     public String[] getNext(){
-        if(hasNext()){
-            // String line = bReader.readLine();
-            return line.split(Character.toString(delimiter));
-        }else{
-            System.out.println("The file is empty");
-            return new String[0];
-        }
+        return line.split(Character.toString(delimiter));
     }
 
    /**

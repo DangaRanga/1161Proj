@@ -12,6 +12,7 @@ public class SNIDApp {
     private SNIDDb database;
     private HashMap<String,Name> names;
     private ArrayList<Citizen> records;
+    private static int idcounter = 0;
 
     /**
      * constructor for SNIDApp class
@@ -23,6 +24,7 @@ public class SNIDApp {
         database = new SNIDDb(fileName,delimiter);
         records = new ArrayList<Citizen>();
         names = new HashMap<String,Name>();
+        addExisting();
     }
 
 
@@ -34,29 +36,65 @@ public class SNIDApp {
             return false;
         } 
     }
-    public void addExisting(SNIDDb database){
-        while(database.hasNext()){
-            String[] currentLine = database.getNext();
-            String id;
-            if(isValidId(currentLine[0])){
-                id = currentLine[0];
-            }else{
-                break;
-            }
-            String firstName = currentLine[2];
-            String middleName = currentLine[3];
-            String lastName = currentLine[4];
-            char gender = currentLine[5].charAt(0);
-            String lifeStatus = currentLine[6];
-            
-            String addressOne = currentLine[7];
-            String addressTwo = currentLine[8];
-            String addressThree = currentLine[9];
-            String addressFive = currentLine[10];
-            String motherId = currentLine[11];
-            String fatherId = currentLine[12];
 
+    public void addExistingCitizen(String[] currentLine){
+        // Method stub to modularize the addExisting method
+    }
+
+    /**
+     * Method to add existing Citizens from the file
+     * This method needs to be modularized as it violates the Single responsibility principle
+     */
+    public void addExisting(){
+        int counter = 0;
+        ArrayList<Integer> entries = new ArrayList<Integer>(); 
+        if(!database.isEmptyFile()){
+            while(database.hasNext()){
+                String[] currentLine = database.getNext();
+                String id;
+                // If its the last line in the file this will return false
+                boolean commentLine = currentLine.length == 0?false:currentLine[0].charAt(0) == '#';
+                if (commentLine == true){
+                    System.out.println("Skipped line");
+                    continue;
+                }else{
+                    if(isValidId(currentLine[0])){
+                        id = currentLine[0];
+                    }else{
+                        continue; // To skip entry if invalid id
+                    }
+                    String firstName = currentLine[1];
+                    String middleName = currentLine[2];
+                    String lastName = currentLine[3];
+                    char gender = currentLine[4].charAt(0);
+                    int yearOfBirth = Integer.parseInt(currentLine[5]);
+                    String lifeStatus = currentLine[6];
+                    String addressOne = currentLine[7];
+                    String addressTwo = currentLine[8];
+                    String addressThree = currentLine[9];
+                    String addressFour = currentLine[10];
+                    String addressFive = "";
+                    String motherId;
+                    String fatherId;
+                    if (currentLine.length > 11){
+                        motherId = currentLine[11];
+                        fatherId = currentLine[12];
+                    }else{
+                        motherId = "";
+                        fatherId = "";
+                    }
+                    Citizen citizen = new Citizen(id,firstName,middleName,lastName,gender,
+                                                    yearOfBirth,lifeStatus,addressOne,
+                                                    addressTwo,addressThree,addressFour,
+                                                    addressFive,motherId,fatherId);
+                    records.add(citizen);
+                    entries.add(Integer.parseInt(id));
+                } 
+            } 
+            counter = Collections.max(entries);
+            idcounter = counter;
         }
+        // System.out.println(String.format("Highest id: %s",counter));
     }
     /**
      * Method to register the birth of a Citizen
@@ -72,6 +110,7 @@ public class SNIDApp {
      */
     public void registerBirth(char gender, int yob, String fName, String mName, String lName){
         Citizen newCitizen = new Citizen(gender,yob,fName,mName,lName);
+        newCitizen.setId(Integer.toString(++idcounter));
         newCitizen.setLifeStatus(0);
         records.add(newCitizen);
         // Temporary Solution to get the names, by storing the name with an id
@@ -113,8 +152,8 @@ public class SNIDApp {
         CivicDoc marriageDocument = new MarriageCertificate(groomId,brideId,marriageDate);
         Citizen groom = records.get(idSearch(groomId));
         Citizen bride = records.get(idSearch(brideId));
-        Name brideName = names.get(brideId);
-        String groomLastName = names.get(groomId).getLastName();
+        Name brideName = bride.getNameObj();
+        String groomLastName = groom.getNameObj().getLastName();
         System.out.println(groomLastName);
         groom.addCivicPaper(marriageDocument);
         bride.addCivicPaper(marriageDocument);
@@ -199,7 +238,7 @@ public class SNIDApp {
         Citizen father =  (Citizen)records.get(citizenPosition).getParent('F');
         if(father!=null){
            String fatherId = father.getId();
-           Name fatherName = names.get(fatherId); // Since the id is the key
+           Name fatherName =  father.getNameObj(); // Since the id is the key
            return fatherId + "," + fatherName.getFirstName() + "," +
                     fatherName.getMiddleName() + "," + fatherName.getLastName();
         }
@@ -222,7 +261,7 @@ public class SNIDApp {
         Citizen mother =  (Citizen)records.get(citizenPosition).getParent('M');
         if(mother!=null){
            String motherId = mother.getId();
-           Name motherName = names.get(motherId); // Since the id is the key
+           Name motherName = mother.getNameObj(); // Since the id is the key
            return  motherId + "," + motherName.getFirstName() + "," +
                     motherName.getMiddleName() + "," + motherName.getLastName();
         }
@@ -263,7 +302,7 @@ public class SNIDApp {
      */
     public String mailingLabel(String id){
         Citizen person = records.get(idSearch(id));
-        Name personName = names.get(id);
+        Name personName = person.getNameObj();
         String address;
         try{
             address = person.getAddress().toString();
@@ -288,13 +327,15 @@ public class SNIDApp {
     public String search(String id){
         int index = idSearch(id);
         if (index < 0 ){
+            System.out.println("This person does not exist");
             return "";
         }else{
             if (records.get(index).equals(null)){
+                System.out.println("This person does not exist");
                 return "";
             }else{
                 Citizen person = records.get(idSearch(id));
-                Name personName = names.get(id);
+                Name personName = person.getNameObj();
                 return id + "," + person.getGender() + "," +
                     personName.getFirstName() + "," + 
                     personName.getMiddleName() + "," +
@@ -335,7 +376,7 @@ public class SNIDApp {
             return new String[0];
         }else{
             Citizen person = records.get(index);
-            Name personName = names.get(person.getId());
+            Name personName = person.getNameObj();
             String[] citiArr = {person.getId(), 
                             Character.toString(person.getGender()), 
                             personName.getFirstName(),
@@ -390,7 +431,7 @@ public class SNIDApp {
 
             try{
                 if(biodata.toString().equals(tag+value)){
-                    Name personName = names.get(person.getId());
+                    Name personName = person.getNameObj();
                     String[] citiArr = {person.getId(),
                                 Character.toString(person.getGender()), 
                                 personName.getFirstName(),
@@ -469,7 +510,7 @@ public class SNIDApp {
     private String[] buildList(Citizen citizen){
         ArrayList<String> writeList = new ArrayList<String>();
         String id = citizen.getId();
-        Name citizenName = names.get(id);
+        Name citizenName = citizen.getNameObj();
         writeList.add(id);
         writeList.add(citizenName.getFirstName());
         writeList.add(citizenName.getMiddleName());
@@ -499,27 +540,13 @@ public class SNIDApp {
 
     public static void main(String[]args){
         SNIDApp test = new SNIDApp("Citizens.txt",',');
-        test.registerBirth('M',1000,"Jason", "Andre", "Gayle"); // id = 1
+       // test.addExisting();
+        test.search("2");
         test.registerBirth('M',999,"Steve","Something","Jobs");
-        test.registerDeath("2", "Cancer", "I forgot", "A hospital");
-        test.registerBirth('F',420,"Martha","Something","Gates");
-        test.registerBirth('M',2000,"Mario","Alucard","Anckle"); // id = 4
-        System.out.println(Arrays.toString(test.search("Mario","Anckle")));
-        /*
-        test.registerBirth('F',2000,"Jahnika","Something","Blair"); // id = 5
-        test.registerMarriage("4","5","5/7/2020");
-        test.updateAddress("1", "somestreet", "sometown", "someparish", "somecountry");
-        test.updateAddress("2", "somestreet", "sometown", "someparish", "somecountry");
-        test.updateAddress("3", "somestreet", "sometown", "someparish", "somecountry");
-        test.addParentData("1", "4", "5");
-        test.shutdown(); */
-        /* System.out.println(test.search("2"));
-
-        Citizen person2 = test.records.get(test.idSearch("2"));
-        System.out.println(person2.getBiometric("F"));
-        System.out.println(Arrays.toString(test.search('F',"520")));
-        System.out.println(Arrays.toString(test.search('D',"420")));
-        System.out.println(test.mailingLabel("1")); */
+        System.out.println(test.mailingLabel("1"));
+        System.out.println(test.search("1"));
+        //System.out.println(test.search("Martha", "Leviathan"));
+        // System.out.println(test.search("8"));
 
 
 
