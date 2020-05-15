@@ -25,6 +25,39 @@ public class SNIDApp {
         names = new HashMap<String,Name>();
     }
 
+
+    private boolean isValidId(String id){  
+        try{
+            Integer.parseInt(id);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        } 
+    }
+    public void addExisting(SNIDDb database){
+        while(database.hasNext()){
+            String[] currentLine = database.getNext();
+            String id;
+            if(isValidId(currentLine[0])){
+                id = currentLine[0];
+            }else{
+                break;
+            }
+            String firstName = currentLine[2];
+            String middleName = currentLine[3];
+            String lastName = currentLine[4];
+            char gender = currentLine[5].charAt(0);
+            String lifeStatus = currentLine[6];
+            
+            String addressOne = currentLine[7];
+            String addressTwo = currentLine[8];
+            String addressThree = currentLine[9];
+            String addressFive = currentLine[10];
+            String motherId = currentLine[11];
+            String fatherId = currentLine[12];
+
+        }
+    }
     /**
      * Method to register the birth of a Citizen
      * <br>
@@ -276,7 +309,9 @@ public class SNIDApp {
         Citizen searchCiti = new Citizen('0', 0, firstName,null, lastName);
         int index = Collections.binarySearch(records, searchCiti,new Comparator<Citizen>(){
             public int compare(Citizen citi1, Citizen citi2){
-                return citi1.getNameObj().getFirstName().compareTo(citi2.getNameObj().getFirstName());
+                int firstNameComp = citi1.getNameObj().getFirstName().compareTo(citi2.getNameObj().getFirstName());
+                int lastNameComp = citi1.getNameObj().getLastName().compareTo(citi2.getNameObj().getLastName());
+                return Integer.toString(lastNameComp).compareTo(Integer.toString(firstNameComp));
             }
         });
     

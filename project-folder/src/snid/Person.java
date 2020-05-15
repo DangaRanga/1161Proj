@@ -111,20 +111,13 @@ public class Person{
         return Integer.toString(id);
     }
 
-    private boolean isValidId(String id){  
-        try{
-            Integer.parseInt(id);
-            return true;
-        }catch(NumberFormatException e){
-            return false;
-        } 
+
+
+    public void setCounter(int id){
+        idcounter = id + 1;
     }
     public void setId(String id){
-      if(isValidId(id)){
         this.id = Integer.parseInt(id);
-      }else{
-          throw new NumberFormatException(String.format("Invalid id %s entered",id));
-      }
     }
 
     /**

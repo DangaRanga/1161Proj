@@ -52,12 +52,14 @@ public class SNIDDb {
      * to check if there are any more lines in the file to read
      * @return A boolean value indicating if the next line in the file
      * can be read
-     * @throws IOException Which is later caught in the constructor for the
-     * SNIDDApp
      */
 
-    public boolean hasNext() throws IOException{
-        line = bReader.readLine();
+    public boolean hasNext(){
+        try{
+            line = bReader.readLine();
+        }catch(IOException e){
+            System.out.println("Handling unexpected IOException");
+        }
         return line != null;
     }
 
@@ -69,7 +71,7 @@ public class SNIDDb {
      * @return A string array representing a line in the file
      * @throws IOException Which is later caught in the SNIDDApp
      */
-    public String[] getNext() throws IOException{
+    public String[] getNext(){
         if(hasNext()){
             // String line = bReader.readLine();
             return line.split(Character.toString(delimiter));
@@ -134,13 +136,8 @@ public class SNIDDb {
    }
    public static void main(String[]args){
        SNIDDb test = new SNIDDb("Citizens.txt",',');
-       try{
         System.out.println(Arrays.toString(test.getNext()));
         System.out.println(Arrays.toString(test.getNext()));
         System.out.println(Arrays.toString(test.getNext()));
-       }catch(IOException e){
-           System.out.println(e.getMessage());
-
-       }
    }
 }
