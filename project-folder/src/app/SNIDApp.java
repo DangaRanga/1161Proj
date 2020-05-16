@@ -69,6 +69,14 @@ public class SNIDApp {
                     char gender = currentLine[4].charAt(0);
                     int yearOfBirth = Integer.parseInt(currentLine[5]);
                     String lifeStatus = currentLine[6];
+                    if(currentLine.length <= 7){
+                        Citizen citizen = new Citizen(gender,yearOfBirth,firstName,
+                                                        middleName,lastName);
+                        citizen.setId(id);
+                        records.add(citizen);
+                        System.out.println(String.format("Successfully added... %s",id));
+                        continue;
+                    }
                     String addressOne = currentLine[7];
                     String addressTwo = currentLine[8];
                     String addressThree = currentLine[9];
@@ -88,6 +96,7 @@ public class SNIDApp {
                                                     addressTwo,addressThree,addressFour,
                                                     addressFive,motherId,fatherId);
                     records.add(citizen);
+                    System.out.println(String.format("Successfully added... %s",id));
                     entries.add(Integer.parseInt(id));
                 } 
             } 
@@ -161,7 +170,7 @@ public class SNIDApp {
         brideName.setLastName(groomLastName); // Setting the name in the hashMap
     }
 
-    /**
+     /**
      * Private method to search for the Id of a citizen using a binary search
      * <br>
      * the list is sorted then the id is compared againsit others in the list
@@ -173,6 +182,35 @@ public class SNIDApp {
      * @return An integer representing the index in the arraylist with the desired Citizen
      */
     private int idSearch(String id){
+        Collections.sort(records);
+        int firstIndex = 0;
+        int lastIndex = records.size() -1;
+
+        while(firstIndex <= lastIndex) {
+            int middleIndex = (firstIndex + lastIndex) / 2;
+            if (Integer.parseInt(records.get(middleIndex).getId()) == Integer.parseInt(id)){
+                return middleIndex;
+            }
+            else if (Integer.parseInt(records.get(middleIndex).getId()) < Integer.parseInt(id)){
+                firstIndex = middleIndex + 1;
+            }
+            else if (Integer.parseInt(records.get(middleIndex).getId()) > Integer.parseInt(id)){
+                lastIndex = middleIndex - 1;
+            }
+        }
+        return -1;
+    }
+
+   @Deprecated
+    /**
+     * Old method for searching an ID
+     * @author Mario Anckle
+     * @author Jason Gayle
+     * @deprecated Replaced by idSearch
+     * @param id The id of the Citizen
+     * @return An integer representing the index the Citizen is at
+     */
+    private int idSearchOld(String id){
         Collections.sort(records);
         int firstIndex = 0;
         int lastIndex = records.size() -1;
@@ -529,24 +567,22 @@ public class SNIDApp {
     }
     
     public void shutdown(){
+    // If the database is already empty it won't be rewritten to
+       if(!database.isEmptyFile()){
+          database.reWrite();
+        }
         for(Citizen citizen:records){
             database.putNext(buildList(citizen));
         }
-
-
     }
 
 
 
     public static void main(String[]args){
         SNIDApp test = new SNIDApp("Citizens.txt",',');
-       // test.addExisting();
-        test.search("2");
         test.registerBirth('M',999,"Steve","Something","Jobs");
-        System.out.println(test.mailingLabel("1"));
-        System.out.println(test.search("1"));
-        //System.out.println(test.search("Martha", "Leviathan"));
-        // System.out.println(test.search("8"));
+        System.out.println(Arrays.toString(test.search("Jason","Gayle")));
+        System.out.println(test.records.get(9).getNameObj().getFirstName());
 
 
 

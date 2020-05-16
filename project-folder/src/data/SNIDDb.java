@@ -95,6 +95,14 @@ public class SNIDDb {
             System.out.println("The file could not be found");
         }catch(IOException e){
             System.out.println("An inexpected IOException has occured: " + e.getMessage());
+        }finally{
+            if(bWriter != null){
+                try{
+                    bWriter.close();
+                }catch(IOException e){
+
+                }
+            }
         }
    }
 

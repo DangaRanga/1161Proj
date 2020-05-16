@@ -23,6 +23,7 @@ public class Citizen extends Person implements Comparable<Citizen>{
                     String middleName, String lastName){
     
         super(gender, yearOfBirth);
+        super.setLifeStatus(0);
         name = new Name(firstName,middleName,lastName);
         papers = new ArrayList<CivicDoc>();
     }
@@ -80,9 +81,11 @@ public class Citizen extends Person implements Comparable<Citizen>{
      * @return An integer representing how one citizen's ID comapres to another's
      */
     public int compareTo(Citizen other){
-        return this.getId().compareTo(other.getId());
+        Integer id1 = Integer.parseInt(this.getId());
+        Integer id2 = Integer.parseInt(other.getId());
+        return id1.compareTo(id2);
     }
-    /**
+    /** 
      * Accessor method to get the name of a Citizen
      * @return A string representing a Citizen's name
      */
