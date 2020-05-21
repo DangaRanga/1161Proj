@@ -80,16 +80,17 @@ public class TextUI {
     }
     
     private void updateCitizenAddress(SNIDApp appObj){
+        scan.nextLine();
         System.out.println("Enter the Citizen's id: ");
-        String id = scan.next();
+        String id = scan.nextLine();
         System.out.println("Enter the Citizen's street address");
-        String street = scan.next();
+        String street = scan.nextLine();
         System.out.println("Enter the town: ");
-        String town = scan.next();
+        String town = scan.nextLine();
         System.out.println("Enter the parish: ");
-        String parish = scan.next();
+        String parish = scan.nextLine();
         System.out.println("Enter the country: ");
-        String country = scan.next();
+        String country = scan.nextLine();
         appObj.updateAddress(id, street, town, parish, country);
         System.out.println("Update Successful...");
     }

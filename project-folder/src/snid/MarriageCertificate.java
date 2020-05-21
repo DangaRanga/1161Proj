@@ -14,16 +14,36 @@ public class MarriageCertificate implements CivicDoc{
         refNo = Integer.toString(++counter);
     }
 
+    public MarriageCertificate(String refNo, String groomId, String brideId, String marriageDate){
+        this.groomId = groomId;
+        this.brideId = brideId;
+        this.marriageDate = marriageDate;
+        this.refNo = refNo;
+    }
+
     @Override
     public String getRefNo(){
         return "M" + refNo;
+    }
+
+    public String getDate(){
+        return marriageDate;
+    }
+
+    public String getGroomId(){
+        return groomId;
+    }
+
+    public String getBrideId(){
+        return brideId;
     }
     /**
      * toString method for the MarriageDoc class
      * @return a formatted String of marriage details
      */
     public String toString(){
-        return "Marriage no.: " + refNo + " Groom ID: " + groomId +
-                " Bride ID: " + brideId + " Marriage date: " + marriageDate;
+        return "CivicDoc no.: " + refNo + " Type: Marriage " + 
+                " Groom ID: " + groomId +" Bride ID: " + brideId +
+                " Marriage date: " + marriageDate;
     }
 }

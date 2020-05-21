@@ -12,6 +12,7 @@ public class SNIDApp {
     private SNIDDb database;
     private HashMap<String,Name> names;
     private ArrayList<Citizen> records;
+    private HashMap<String,CivicDoc> civicPapers;
     private static int idcounter = 0;
 
     /**
@@ -24,10 +25,19 @@ public class SNIDApp {
         database = new SNIDDb(fileName,delimiter);
         records = new ArrayList<Citizen>();
         names = new HashMap<String,Name>();
+        civicPapers = new HashMap<String,CivicDoc>();
         addExisting();
     }
 
 
+    private void putCivicDocs(Citizen citizen,String[] currentLine){
+       String refNo = Character.toString(currentLine[13].charAt(1));
+       String groomId = currentLine[14];
+       String brideId = currentLine[15];
+       String marriageDate = currentLine[16];
+       MarriageCertificate marriageDoc = new MarriageCertificate(refNo,groomId,brideId,marriageDate);
+       citizen.addCivicPaper(marriageDoc);
+    }
     private boolean isValidId(String id){  
         try{
             Integer.parseInt(id);
@@ -37,9 +47,7 @@ public class SNIDApp {
         } 
     }
 
-    public void addExistingCitizen(String[] currentLine){
-        // Method stub to modularize the addExisting method
-    }
+
 
     /**
      * Method to add existing Citizens from the file
@@ -95,6 +103,9 @@ public class SNIDApp {
                                                     yearOfBirth,lifeStatus,addressOne,
                                                     addressTwo,addressThree,addressFour,
                                                     addressFive,motherId,fatherId);
+                    if(currentLine.length > 14){
+                        putCivicDocs(citizen, currentLine);
+                    }
                     records.add(citizen);
                     System.out.println(String.format("Successfully added... %s",id));
                     entries.add(Integer.parseInt(id));
@@ -103,7 +114,6 @@ public class SNIDApp {
             counter = Collections.max(entries);
             idcounter = counter;
         }
-        // System.out.println(String.format("Highest id: %s",counter));
     }
     /**
      * Method to register the birth of a Citizen
@@ -125,6 +135,7 @@ public class SNIDApp {
         // Temporary Solution to get the names, by storing the name with an id
         names.put(newCitizen.getId(),new Name(fName,mName,lName));
     }
+
     /**
      * method to register death of a person
      * <br>
@@ -144,6 +155,7 @@ public class SNIDApp {
         CivicDoc deathDetails = new DeathCertificate(id, causeOfDeath, dateOfDeath, placeOfDeath);
         Citizen person = records.get(idSearch(id));
         person.setLifeStatus(1);
+        civicPapers.put(id,deathDetails);
         person.addCivicPaper(deathDetails);
     }
     /**
@@ -167,7 +179,9 @@ public class SNIDApp {
         groom.addCivicPaper(marriageDocument);
         bride.addCivicPaper(marriageDocument);
         bride.changeLastName(groomLastName);
-        brideName.setLastName(groomLastName); // Setting the name in the hashMap
+        brideName.setLastName(groomLastName);
+        civicPapers.put(groomId,marriageDocument);
+        civicPapers.put(brideId,marriageDocument);
     }
 
      /**
@@ -201,33 +215,6 @@ public class SNIDApp {
         return -1;
     }
 
-   @Deprecated
-    /**
-     * Old method for searching an ID
-     * @author Mario Anckle
-     * @author Jason Gayle
-     * @deprecated Replaced by idSearch
-     * @param id The id of the Citizen
-     * @return An integer representing the index the Citizen is at
-     */
-    private int idSearchOld(String id){
-        Collections.sort(records);
-        int firstIndex = 0;
-        int lastIndex = records.size() -1;
-        while(firstIndex <= lastIndex) {
-            int middleIndex = (firstIndex + lastIndex) / 2;
-            if (records.get(middleIndex).getId().compareTo(id) == 0){
-                return middleIndex;
-            }
-            else if (records.get(middleIndex).getId().compareTo(id) < 0){
-                firstIndex = middleIndex + 1;
-            }
-            else if (records.get(middleIndex).getId().compareTo(id) > 0){
-                lastIndex = middleIndex - 1;
-            }
-        }
-        return -1;
-    }
 
     private boolean recordExists(int index){
         return index >= 0;
@@ -384,18 +371,13 @@ public class SNIDApp {
 
 
     private int nameSearch(String firstName,String lastName){
-        Collections.sort(records);
-        Citizen searchCiti = new Citizen('0', 0, firstName,null, lastName);
-        int index = Collections.binarySearch(records, searchCiti,new Comparator<Citizen>(){
-            public int compare(Citizen citi1, Citizen citi2){
-                int firstNameComp = citi1.getNameObj().getFirstName().compareTo(citi2.getNameObj().getFirstName());
-                int lastNameComp = citi1.getNameObj().getLastName().compareTo(citi2.getNameObj().getLastName());
-                return Integer.toString(lastNameComp).compareTo(Integer.toString(firstNameComp));
+        for(int index = 0; index  < records.size();index++){
+            Name citiName = records.get(index).getNameObj();
+            if (citiName.getFirstName().equals(firstName) && citiName.getLastName().equals(lastName)){
+                return index;
             }
-        });
-    
-        System.out.println(Integer.toString(index));
-        return index;
+        }
+        return -1;
     }
     /**
      * search by name method
@@ -539,6 +521,29 @@ public class SNIDApp {
             writeList.add(mother.getId());
         }
     }
+
+   
+    private String writeCivicDocs(Citizen citizen){
+        MarriageCertificate marriageDoc;
+        DeathCertificate deathDoc;
+        String civicString = "";
+        try{
+            marriageDoc = citizen.getMarriageDoc();
+            civicString +=  marriageDoc.getRefNo() + "," +
+                            marriageDoc.getBrideId() + "," + 
+                            marriageDoc.getGroomId() + "," +
+                            marriageDoc.getDate();
+        }catch(NullPointerException e){
+            System.out.println("This citizen is not married");
+        }
+        if(citizen.getLifeStatus() == 'D'){
+            deathDoc = citizen.getDeathDoc();
+            civicString += deathDoc.toString();
+        }
+        return civicString;
+    }
+
+
     /**
      * private method to wirte citizen information to a list
      * The primary method for building the list to be written to the file
@@ -560,8 +565,10 @@ public class SNIDApp {
         }else{
             writeList.add("Dead");
         }
+        String address = splitAddress(citizen.getAddress());
         writeList.add(splitAddress(citizen.getAddress()));
         putParentIds(writeList,citizen);
+        writeList.add(writeCivicDocs(citizen));
         String[] writeArr = new String[writeList.size()];
         return writeList.toArray(writeArr);
     }

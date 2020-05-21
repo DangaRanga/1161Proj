@@ -5,7 +5,7 @@ package snid;
  * @version 1.0
  */
 
-public class Name {
+public class Name implements Comparable<Name>{
     // Attributes for the name class
     private String fn;
     private String mn;
@@ -61,7 +61,7 @@ public class Name {
     public String toString(){
         return getFirstName() + " " + getMiddleName() + " " + getLastName();
     }
-
+    
     /**
      * equals method for the Name class to check if the name entered is correct
      * @param name A Name object representing an individual's name
@@ -71,5 +71,11 @@ public class Name {
         return (name.getFirstName().equals(fn) &&
                 name.getMiddleName().equals(mn) &&
                 name.getLastName().equals(ln));
+    }
+
+    public int compareTo(Name name){
+        Integer fnComparison = name.getFirstName().compareTo(fn);
+        Integer lnComparison = name.getLastName().compareTo(ln);
+        return fnComparison.compareTo(lnComparison);
     }
 }

@@ -24,8 +24,8 @@ public class DeathCertificate implements CivicDoc {
     }
     
     public String toString(){
-        return "Death Cert: #" + refNo + "\n" + " Cause:" + causeOfDeath + "\n" + " Date: " + dateOfDeath
-        + " Place of death: " + placeOfDeath; 
+        return "CivicDoc no.: " + refNo + " Type: Death " + " Cause: " + causeOfDeath + " Date: " + 
+                dateOfDeath + " Place of death: " + placeOfDeath; 
         
     }
 }
