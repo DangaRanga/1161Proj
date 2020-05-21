@@ -19,7 +19,21 @@ public class TextUI {
             return false;
         } 
     }
-    
+    private String validId(String personType){
+        boolean valid;
+        String id = "";
+        do{
+            System.out.println(String.format("Enter the %s's id",personType));
+            String entry = scan.next();
+            if(isParseable(entry)){
+                id = entry;
+                valid = true;
+            }else{
+                valid = false;
+            }
+        }while(!valid);
+        return id;
+    }
     private int validYob(){
         boolean valid;
         int yob;
@@ -35,8 +49,8 @@ public class TextUI {
             }
         }while(!valid);
         return yob;
-        
     }
+
     /**
      * Private helper method when the option to register a birth has been selected
      * <br> 
@@ -58,31 +72,28 @@ public class TextUI {
        
         // Validating the year of Birth
         int yob = validYob();
+        scan.nextLine();
         System.out.println("Enter the person's first name");
-        String firstName = scan.next();
+        String firstName = scan.nextLine();
         System.out.println("Enter the person's middle name");
-        String middleName = scan.next();
+        String middleName = scan.nextLine();
         System.out.println("Enter the person's last name");
-        String lastName = scan.next();
+        String lastName = scan.nextLine();
         appObj.registerBirth(gender, yob, firstName, middleName, lastName);
         System.out.println("Registration Successful...");
     }
 
     private void updateParentData(SNIDApp appObj){
-        System.out.println("Enter the person's id: ");
-        String id = scan.next();
-        System.out.println("Enter the person's father's id");
-        String fatherId = scan.next();
-        System.out.println("Enter the person's mother's id");
-        String motherId = scan.next();
+        String id = validId("person");
+        String fatherId = validId("father");
+        String motherId = validId("mother");
         appObj.addParentData(id, fatherId, motherId);
         System.out.println("Updating parent details...");
     }
     
     private void updateCitizenAddress(SNIDApp appObj){
         scan.nextLine();
-        System.out.println("Enter the Citizen's id: ");
-        String id = scan.nextLine();
+        String id = validId("Citizen");
         System.out.println("Enter the Citizen's street address");
         String street = scan.nextLine();
         System.out.println("Enter the town: ");
@@ -96,30 +107,27 @@ public class TextUI {
     }
 
     private void registerCitizenDeath(SNIDApp appObj){
-        System.out.println("Enter the Citizen's id: ");
-        String id = scan.next();
+        String id = validId("Citizen");
+        scan.nextLine();
         System.out.println("Enter the Citizen's cause of death: ");
-        String causeOfDeath = scan.next();
+        String causeOfDeath = scan.nextLine();
         System.out.println("Enter the Citizen's date of death in the format - (MM/DD/YYYY): ");
-        String dateOfDeath = scan.next();
+        String dateOfDeath = scan.nextLine();
         System.out.println("Enter the Citizen's place of death: ");  
-        String placeOfDeath = scan.next();
+        String placeOfDeath = scan.nextLine();
         appObj.registerDeath(id, causeOfDeath, dateOfDeath, placeOfDeath);      
     }
 
     private void registerCitizenMarriage(SNIDApp appObj){
-        System.out.println("Enter the groom's id");
-        String groomId = scan.next();
-        System.out.println("Enter the bride's id");
-        String brideId = scan.next();
+        String groomId = validId("groom");
+        String brideId = validId("bride");
         System.out.println("Enter the date of the marriage in the format - (MM/DD/YYYY): ");
         String marriageDate = scan.next();
         appObj.registerMarriage(groomId, brideId, marriageDate);        
     }
 
     private void generateMailingLabel(SNIDApp appObj){
-        System.out.println("Enter the Citizen's id");
-        String id = scan.next();
+        String id = validId("Citizen");
         System.out.println("The mailing label goes as follows \n" + appObj.mailingLabel(id));
     }
 
@@ -150,14 +158,12 @@ public class TextUI {
                     String[] citizenDetails = appObj.search(firstName, lastName);
                     System.out.println("The citizen's details goes as follows in an array format: " +
                         Arrays.toString(citizenDetails)); 
+                    break;
                 case("X"):
                     searchBool = false;
                     break;
             }
-
-
-        }
-        
+        }  
     }
 
     //Method
@@ -189,10 +195,13 @@ public class TextUI {
                 break;
             case "d":
                 registerCitizenDeath(user);
+                break;
             case "e":
                 registerCitizenMarriage(user);
+                break;
             case "f":
                 generateMailingLabel(user);
+                break;
             case "g":
                 searchOption(user);
                 break;

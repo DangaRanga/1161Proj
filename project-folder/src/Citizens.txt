@@ -1,6 +1,6 @@
 1,Adam,,Gardener,M,1955,Dead,1 Orchard Road,Eden,Kingston,Jamaica,,
 2,Eve,,Gardener,F,1960,Alive,1 Orchard Road,Eden,Kingston,Jamaica,,
-3,Cain,Adam,Gardener,M,1970,Alive,12 Apple Way,Caanan,Montego Bay,Jamaica,,
+3,Cain,Adam,Gardener,M,1970,Dead,12 Apple Way,Caanan,Montego Bay,Jamaica,,
 4,Abel,Adam,Gardener,M,1971,Dead,43 Bamboo Avenue,Golden Spring,Kingston 9,Jamaica,,
 5,Sonya,Eve,Gardener,F,1975,Alive,27 Salem Road,May Pen,Clarendon,Jamaica,,
 6,John,Antioch,Galilee,M,1950,Alive,67 Ardeduct Way,Nain,St. Elizabeth,Jamaica,,

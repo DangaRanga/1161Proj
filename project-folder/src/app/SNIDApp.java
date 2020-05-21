@@ -12,32 +12,22 @@ public class SNIDApp {
     private SNIDDb database;
     private HashMap<String,Name> names;
     private ArrayList<Citizen> records;
-    private HashMap<String,CivicDoc> civicPapers;
     private static int idcounter = 0;
 
     /**
-     * constructor for SNIDApp class
+     * Constructor for SNIDApp class
      * <br>
-     * @param fileName
-     * @param delimiter
+     * @param fileName The name of the file to be written to
+     * @param delimiter The delimiter that separates the characters
      */
     public SNIDApp(String fileName,char delimiter){
         database = new SNIDDb(fileName,delimiter);
         records = new ArrayList<Citizen>();
         names = new HashMap<String,Name>();
-        civicPapers = new HashMap<String,CivicDoc>();
         addExisting();
     }
 
 
-    private void putCivicDocs(Citizen citizen,String[] currentLine){
-       String refNo = Character.toString(currentLine[13].charAt(1));
-       String groomId = currentLine[14];
-       String brideId = currentLine[15];
-       String marriageDate = currentLine[16];
-       MarriageCertificate marriageDoc = new MarriageCertificate(refNo,groomId,brideId,marriageDate);
-       citizen.addCivicPaper(marriageDoc);
-    }
     private boolean isValidId(String id){  
         try{
             Integer.parseInt(id);
@@ -103,9 +93,6 @@ public class SNIDApp {
                                                     yearOfBirth,lifeStatus,addressOne,
                                                     addressTwo,addressThree,addressFour,
                                                     addressFive,motherId,fatherId);
-                    if(currentLine.length > 14){
-                        putCivicDocs(citizen, currentLine);
-                    }
                     records.add(citizen);
                     System.out.println(String.format("Successfully added... %s",id));
                     entries.add(Integer.parseInt(id));
@@ -155,8 +142,8 @@ public class SNIDApp {
         CivicDoc deathDetails = new DeathCertificate(id, causeOfDeath, dateOfDeath, placeOfDeath);
         Citizen person = records.get(idSearch(id));
         person.setLifeStatus(1);
-        civicPapers.put(id,deathDetails);
         person.addCivicPaper(deathDetails);
+        System.out.println(String.format("Death details: %s",deathDetails.toString()));
     }
     /**
      * Method to register two Citizens' marriage.
@@ -175,13 +162,11 @@ public class SNIDApp {
         Citizen bride = records.get(idSearch(brideId));
         Name brideName = bride.getNameObj();
         String groomLastName = groom.getNameObj().getLastName();
-        System.out.println(groomLastName);
         groom.addCivicPaper(marriageDocument);
         bride.addCivicPaper(marriageDocument);
         bride.changeLastName(groomLastName);
         brideName.setLastName(groomLastName);
-        civicPapers.put(groomId,marriageDocument);
-        civicPapers.put(brideId,marriageDocument);
+        System.out.println(String.format("Marriage details: %s ",marriageDocument.toString()));
     }
 
      /**
@@ -369,7 +354,11 @@ public class SNIDApp {
         }
     }
 
-
+    /**
+     * Private method to search for a person's records given their name
+     * @param firstName The person's first name
+     * @param lastName The person's last name
+     */
     private int nameSearch(String firstName,String lastName){
         for(int index = 0; index  < records.size();index++){
             Name citiName = records.get(index).getNameObj();
@@ -521,29 +510,6 @@ public class SNIDApp {
             writeList.add(mother.getId());
         }
     }
-
-   
-    private String writeCivicDocs(Citizen citizen){
-        MarriageCertificate marriageDoc;
-        DeathCertificate deathDoc;
-        String civicString = "";
-        try{
-            marriageDoc = citizen.getMarriageDoc();
-            civicString +=  marriageDoc.getRefNo() + "," +
-                            marriageDoc.getBrideId() + "," + 
-                            marriageDoc.getGroomId() + "," +
-                            marriageDoc.getDate();
-        }catch(NullPointerException e){
-            System.out.println("This citizen is not married");
-        }
-        if(citizen.getLifeStatus() == 'D'){
-            deathDoc = citizen.getDeathDoc();
-            civicString += deathDoc.toString();
-        }
-        return civicString;
-    }
-
-
     /**
      * private method to wirte citizen information to a list
      * The primary method for building the list to be written to the file
@@ -561,14 +527,12 @@ public class SNIDApp {
         writeList.add(Character.toString(citizen.getGender()));
         writeList.add(Integer.toString(citizen.getYOB()));
         if(citizen.getLifeStatus()=='A'){
-            writeList.add("Alive");
+            writeList.add("Alive"); 
         }else{
             writeList.add("Dead");
         }
-        String address = splitAddress(citizen.getAddress());
         writeList.add(splitAddress(citizen.getAddress()));
         putParentIds(writeList,citizen);
-        writeList.add(writeCivicDocs(citizen));
         String[] writeArr = new String[writeList.size()];
         return writeList.toArray(writeArr);
     }

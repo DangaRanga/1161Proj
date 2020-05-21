@@ -42,8 +42,8 @@ public class MarriageCertificate implements CivicDoc{
      * @return a formatted String of marriage details
      */
     public String toString(){
-        return "CivicDoc no.: " + refNo + " Type: Marriage " + 
-                " Groom ID: " + groomId +" Bride ID: " + brideId +
-                " Marriage date: " + marriageDate;
+        return "CivicDoc no.: " + getRefNo() + "\n" + "Type: Marriage " + "\n" +
+                "Groom ID: " + getGroomId() + "\n" + "Bride ID: " + getBrideId() + "\n" +
+                "Marriage date: " + getDate();
     }
 }
