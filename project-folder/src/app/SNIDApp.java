@@ -38,7 +38,9 @@ public class SNIDApp {
     }
 
 
-
+    public ArrayList<Citizen> getRecords(){
+        return records;
+    }
     /**
      * Method to add existing Citizens from the file
      * This method needs to be modularized as it violates the Single responsibility principle
@@ -554,28 +556,5 @@ public class SNIDApp {
         test.registerBirth('M',999,"Steve","Something","Jobs");
         System.out.println(Arrays.toString(test.search("Jason","Gayle")));
         System.out.println(test.records.get(9).getNameObj().getFirstName());
-
-
-
-        //--------------------------------------------------------------------//
-        // Time for id search
-        //--------------------------------------------------------------------//
-       /* long startTime1 = System.nanoTime();
-        test.idSearch("1");
-        long endTime1 = System.nanoTime();
-        System.out.println("Time for idSearch: "+(endTime1-startTime1)+" nanoseconds");
-        System.out.println("Time in milliseconds "+((endTime1-startTime1)/1000000));
-        //--------------------------------------------------------------------//
-        // Time for compare to id search
-        //--------------------------------------------------------------------//
-        long startTime2 = System.nanoTime();
-        test.idSearch("1");
-        long endTime2 = System.nanoTime();
-        System.out.println("Time for idSearchComp: "+(endTime2-startTime2) + " nanoseconds");
-        System.out.println("Time in milliseconds "+((endTime2-startTime2)/1000000));
-        //--------------------------------------------------------------------//
-        */
     }
-
-
 }
