@@ -5,10 +5,10 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 public class RadioPanel extends JPanel{
-    JRadioButton idOption;
-    JRadioButton nameOption;
-    JRadioButton biometricOption;
-    GridBagConstraints constraints;
+    protected JRadioButton idOption;
+    protected JRadioButton nameOption;
+    protected JRadioButton biometricOption;
+    protected GridBagConstraints constraints;
 
     public RadioPanel(){
         setLayout(new FlowLayout());

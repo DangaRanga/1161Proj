@@ -41,6 +41,10 @@ public class SNIDApp {
     public ArrayList<Citizen> getRecords(){
         return records;
     }
+
+    public HashMap<String,Name> getMap(){
+        return names;
+    }
     /**
      * Method to add existing Citizens from the file
      * This method needs to be modularized as it violates the Single responsibility principle
