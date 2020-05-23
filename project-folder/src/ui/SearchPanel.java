@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 public class SearchPanel extends JPanel {
 
+    // TODO Write Getter for this attribute
     protected JTextField searchField;
     
     public SearchPanel(){

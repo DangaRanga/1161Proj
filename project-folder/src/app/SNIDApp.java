@@ -41,6 +41,10 @@ public class SNIDApp {
     public ArrayList<Citizen> getRecords(){
         return records;
     }
+
+    public HashMap<String,Name> getMap(){
+        return names;
+    }
     /**
      * Method to add existing Citizens from the file
      * This method needs to be modularized as it violates the Single responsibility principle
@@ -96,6 +100,7 @@ public class SNIDApp {
                                                     addressTwo,addressThree,addressFour,
                                                     addressFive,motherId,fatherId);
                     records.add(citizen);
+                    names.put(id,new Name(firstName,middleName,lastName));
                     System.out.println(String.format("Successfully added... %s",id));
                     entries.add(Integer.parseInt(id));
                 } 
@@ -398,6 +403,16 @@ public class SNIDApp {
         }
     }
 
+    public String lastNameSearch(String lastName){
+        for(int index = 0; index  < records.size();index++){
+            Citizen citizen =  records.get(index);
+            Name citiName = citizen.getNameObj();
+            if (citiName.getLastName().equals(lastName)){
+                return citizen.getId();
+            }
+        }
+        return "";
+    }
     /**
      * 
      * @param id

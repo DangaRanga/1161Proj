@@ -2,13 +2,14 @@ package ui;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
 public class RadioPanel extends JPanel{
-    JRadioButton idOption;
-    JRadioButton nameOption;
-    JRadioButton biometricOption;
-    GridBagConstraints constraints;
+
+    // TODO Write getters for these attributes
+    private JRadioButton idOption;
+    private JRadioButton nameOption;
+    private JRadioButton biometricOption;
+    protected GridBagConstraints constraints;
 
     public RadioPanel(){
         setLayout(new FlowLayout());
@@ -25,5 +26,27 @@ public class RadioPanel extends JPanel{
         this.add(biometricOption);
         this.setBorder(new EmptyBorder(15,15,15,15));
     }
-    
+    // BTW don't change anything to private yet
+    /**
+     * returns the idOption atribute
+     * @return the idOption
+     */
+    public JRadioButton getIDButton(){
+        return idOption;
+    }
+    /**
+     * returns the nameOption atribute
+     * @return the nameOption
+     */
+    public JRadioButton getNameButton(){
+        return nameOption;
+    }
+    /**
+     * returns the biometricOption atribute
+     * @return the biometricOption
+     */
+    @Deprecated
+    public JRadioButton getBiometricButton(){
+        return biometricOption;
+    }
 }
