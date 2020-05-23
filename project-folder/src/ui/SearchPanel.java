@@ -15,7 +15,5 @@ public class SearchPanel extends JPanel {
         setMaximumSize(new Dimension(20,55));
         searchField = new JTextField("",30);
         this.add(searchField);
-    }
-
-    
+    }  
 }

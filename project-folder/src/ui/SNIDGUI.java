@@ -18,11 +18,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 public class SNIDGUI extends JFrame {
-    private SearchPanel searchPanel;
     private ButtonPanel buttonPanel;
     private RadioPanel radioPanel;
     private DisplayPanel displayPanel;
-    private RecordsPanel recordsPanel;
     private SNIDApp app;
 
     public SNIDGUI(String title, SNIDApp app) {
@@ -50,7 +48,6 @@ public class SNIDGUI extends JFrame {
      */
     public void recordPanelListeners() {
         JTable table = displayPanel.recordsPan.table;
-        DefaultTableModel tableModel = displayPanel.recordsPan.model;
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent event) {
                 int currentRow = table.getSelectedRow();
@@ -76,7 +73,6 @@ public class SNIDGUI extends JFrame {
 
             @Override
             public void removeUpdate(DocumentEvent event) {
-
                 search(searchField.getText());
             }
 
@@ -119,7 +115,6 @@ public class SNIDGUI extends JFrame {
         buttonPanel.search.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 JTable table = displayPanel.recordsPan.table;
-                DefaultTableModel tableModel = displayPanel.recordsPan.model;
                 String input = displayPanel.searchPan.searchField.getText();
                 JTextArea detailsArea = displayPanel.recordsPan.detailsArea;
                 for(int index=0;index < table.getRowCount();index++){

@@ -3,11 +3,11 @@ package data;
 /**
  * This class represents the SNIDDb
  * @author Jason Gayle
+ * @author Mario Anckle
  * @version 1.0
  */
 
 import java.io.*;
-import java.util.Arrays;
 
 // TODO Implement boolean to check if its the first time the file is being written to
 
@@ -48,7 +48,10 @@ public class SNIDDb {
         }
     }
 
-
+    /**
+     * Method to check if the file is empty
+     * @return A boolean value representing if the file is empty
+     */
     public boolean isEmptyFile(){
         return file.length() == 0;
     }
@@ -99,7 +102,7 @@ public class SNIDDb {
             if(bWriter != null){
                 try{
                     bWriter.close();
-                }catch(IOException e){
+                } catch(IOException e) {
 
                 }
             }
@@ -140,11 +143,5 @@ public class SNIDDb {
                 }
             }
         }
-   }
-   public static void main(String[]args){
-       SNIDDb test = new SNIDDb("Citizens.txt",',');
-        System.out.println(Arrays.toString(test.getNext()));
-        System.out.println(Arrays.toString(test.getNext()));
-        System.out.println(Arrays.toString(test.getNext()));
    }
 }
