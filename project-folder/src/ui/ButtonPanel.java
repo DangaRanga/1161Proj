@@ -29,9 +29,6 @@ public class ButtonPanel extends JPanel{
         quit.setMaximumSize(new Dimension(90,25));
         quit.setBackground(Color.BLACK);
         quit.setForeground(Color.WHITE);
-        /* Box.Filler hFill = new Box.Filler(new Dimension(5,0),
-                                            new Dimension(7,0),
-                                            new Dimension(10,0)); */
         add(Box.createRigidArea(new Dimension(0,5)));
         add(search);
         add(Box.createRigidArea(new Dimension(0,5)));
@@ -40,4 +37,28 @@ public class ButtonPanel extends JPanel{
         add(quit);
 
     }
+    //getters methods for attributes
+    /**
+     * returns the search atribute
+     * @return the search attribute 
+     */
+    public JButton getSearch(){
+        return search;
+    }
+
+    /**
+     * returns the clear atribute
+     * @return The clear button
+     */
+    public JButton getClear(){
+        return clear;
+    }
+    /**
+     * returns the quit atribute
+     * @return The quit button
+     */
+    public JButton getQuit(){
+        return quit;
+    }
+
 }

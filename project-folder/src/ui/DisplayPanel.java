@@ -3,6 +3,7 @@ import app.*;
 import java.awt.*;
 import javax.swing.*;
 public class DisplayPanel extends JPanel{
+    // TODO Write getters for these attributes
     protected SearchPanel searchPan;
     protected RecordsPanel recordsPan;
     private SNIDApp app;

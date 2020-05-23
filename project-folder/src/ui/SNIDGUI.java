@@ -2,6 +2,8 @@ package ui;
 
 import app.*;
 import data.*;
+import snid.Name;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,15 +14,13 @@ import java.awt.event.MouseAdapter;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 public class SNIDGUI extends JFrame {
     private SearchPanel searchPanel;
     private ButtonPanel buttonPanel;
-    private JPanel radioPanel;
+    private RadioPanel radioPanel;
     private DisplayPanel displayPanel;
     private RecordsPanel recordsPanel;
     private SNIDApp app;
@@ -58,16 +58,16 @@ public class SNIDGUI extends JFrame {
                     String id = table.getModel().getValueAt(currentRow, 0).toString();
                     String data = app.mailingLabel(id);
                     displayPanel.recordsPan.detailsArea.setText(data);
-                    displayPanel.searchPan.searchField.setText(id);
                 }
             }
         });
     }
 
-    // For search by ID
     public void searchAndFilter() {
         JTextField searchField = displayPanel.searchPan.searchField;
         TableRowSorter<DefaultTableModel> sorter = displayPanel.recordsPan.sorter;
+        JRadioButton idButton = radioPanel.getIDButton();
+        JRadioButton nameButton = radioPanel.getNameButton();
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent event) {
@@ -76,6 +76,7 @@ public class SNIDGUI extends JFrame {
 
             @Override
             public void removeUpdate(DocumentEvent event) {
+
                 search(searchField.getText());
             }
 
@@ -88,22 +89,21 @@ public class SNIDGUI extends JFrame {
                 if (value.length() == 0) {
                     sorter.setRowFilter(null);
                 } else {
-                    sorter.setRowFilter(RowFilter.regexFilter(value));
+                    if(nameButton.isSelected()){
+                        sorter.setRowFilter(RowFilter.regexFilter(value,1));
+                    } else if(idButton.isSelected()){
+                        sorter.setRowFilter(RowFilter.regexFilter(value,0));
+                    } else {
+                        JOptionPane.showMessageDialog(displayPanel, "Please Select A button", "Error",
+                            JOptionPane.WARNING_MESSAGE);
+                    }
                 }
             }
         });
-
-    }
-
-    public void radioPanelListener() {
-
     }
 
     public void buttonPanelListeners() {
         buttonPanel.clear.addActionListener(new ActionListener() {
-            JTable table = displayPanel.recordsPan.table;
-            DefaultTableModel tableModel = displayPanel.recordsPan.model;
-
             public void actionPerformed(ActionEvent event) {
                 displayPanel.searchPan.searchField.setText("");
                 displayPanel.recordsPan.detailsArea.setText("");
@@ -118,12 +118,23 @@ public class SNIDGUI extends JFrame {
 
         buttonPanel.search.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
+                JTable table = displayPanel.recordsPan.table;
+                DefaultTableModel tableModel = displayPanel.recordsPan.model;
                 String input = displayPanel.searchPan.searchField.getText();
                 JTextArea detailsArea = displayPanel.recordsPan.detailsArea;
+                for(int index=0;index < table.getRowCount();index++){
+                    System.out.println(table.getRowCount());
+                    String id = table.getValueAt(index, 0).toString();
+                    System.out.println(String.format("Value: %s",id));
+                    System.out.println(String.format("Input: %s:",input));
+                    if(id.equals(input)){
+                        detailsArea.setText(app.mailingLabel(id));
+                    }
+                }
                 if (detailsArea.getText().equals("")) {
                     JOptionPane.showMessageDialog(displayPanel, "Record not Found", "Error",
                             JOptionPane.WARNING_MESSAGE);
-                }
+                } 
             }
         });
     }
