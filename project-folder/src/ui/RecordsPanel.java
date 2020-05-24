@@ -16,7 +16,6 @@ public class RecordsPanel extends JPanel {
      *
      */
     private static final long serialVersionUID = -8566509772454481150L;
-    // TODO Write Getters for these attributes
     protected JTextArea detailsArea;
     protected JTextArea recordsArea;
     protected JScrollPane recordsScroll;
@@ -36,7 +35,8 @@ public class RecordsPanel extends JPanel {
         this.app = app;
         setPreferredSize(new Dimension(200, 200));
         setLayout(new FlowLayout());
-        detailsArea = new JTextArea("details", 18, 20);
+        detailsArea = new JTextArea("", 18, 20);
+        detailsArea.setEditable(false);
         model = new DefaultTableModel(0, 2);
         sorter = new TableRowSorter<>(model);
         table = new JTable(model);
@@ -55,6 +55,10 @@ public class RecordsPanel extends JPanel {
         add(detailsArea);
     }
 
+    /**
+     * Method to populate the records field
+     * @return nothing
+     */
     public void addRecords() {
         ArrayList<Citizen> records = app.getRecords();
         for (int i = 0; i < records.size(); i++) {

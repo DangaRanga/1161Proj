@@ -94,6 +94,7 @@ public class TextUI {
     private void updateCitizenAddress(SNIDApp appObj){
         scan.nextLine();
         String id = validId("Citizen");
+        scan.nextLine();
         System.out.println("Enter the Citizen's street address");
         String street = scan.nextLine();
         System.out.println("Enter the town: ");
