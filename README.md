@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # COMP1161 Object Oriented Programming Project
 This project is an implementation of a System for National Identification(SNID)  
 It involves 3 major components  
@@ -18,7 +17,3 @@ javac -d ../bin data/*.java && javac -d ../bin app/*.java (if you want to compil
 In the src type the following command  
 
 java -cp ../bin app.SNIDApp
-=======
-# 1161Proj
-The Repository for our COMP1161 Project
->>>>>>> 5cf0f2d6b2b395f480ac3dc76baa53e87c7a1ed8
