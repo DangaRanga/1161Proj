@@ -13,6 +13,7 @@ public class SNIDApp {
     private HashMap<String,Name> names;
     private ArrayList<Citizen> records;
     private static int idcounter = 0;
+    private static int marriageCounter = 0;
 
     /**
      * Constructor for SNIDApp class
@@ -27,7 +28,10 @@ public class SNIDApp {
         addExisting();
     }
 
-
+    /**
+     * private method to determine if the id entered is valid
+     * @return Boolean value representing if the id is valid
+     */
     private boolean isValidId(String id){  
         try{
             Integer.parseInt(id);
@@ -37,17 +41,40 @@ public class SNIDApp {
         } 
     }
 
-
+    /**
+     * Method to get the records of Citizens to be used in the GUI
+     * @return An arraylist of Citizens representing the records
+     */
     public ArrayList<Citizen> getRecords(){
         return records;
     }
 
+    /**
+     * Method to get the HashMap of names
+     * @return A HashMap of the names
+     */
     public HashMap<String,Name> getMap(){
         return names;
     }
     /**
      * Method to add existing Citizens from the file
      * This method needs to be modularized as it violates the Single responsibility principle
+     * @param fileLine A string array representing the current file line
+     */
+    private void addMarriageDocs(String[] fileLine,Citizen citizen){
+        String refNo = fileLine[13];
+        marriageCounter = Integer.parseInt(refNo.substring(1));
+        System.out.println(marriageCounter);
+        String groomId = fileLine[14];
+        String brideId = fileLine[15];
+        String marriageDate = fileLine[16];
+        MarriageCertificate marriage = new MarriageCertificate(refNo,groomId,brideId,marriageDate);
+        citizen.addCivicPaper(marriage);
+        
+    }
+
+    /**
+     * Method to add existing records from the file
      */
     public void addExisting(){
         int counter = 0;
@@ -64,6 +91,7 @@ public class SNIDApp {
                 }else{
                     if(isValidId(currentLine[0])){
                         id = currentLine[0];
+                        entries.add(Integer.parseInt(id));
                     }else{
                         continue; // To skip entry if invalid id
                     }
@@ -100,12 +128,17 @@ public class SNIDApp {
                                                     addressTwo,addressThree,addressFour,
                                                     addressFive,motherId,fatherId);
                     records.add(citizen);
+                    if(currentLine.length > 14)
+                    {
+                        addMarriageDocs(currentLine,citizen);
+                    }
                     names.put(id,new Name(firstName,middleName,lastName));
                     System.out.println(String.format("Successfully added... %s",id));
-                    entries.add(Integer.parseInt(id));
+                    
                 } 
             } 
             counter = Collections.max(entries);
+            System.out.println(counter);
             idcounter = counter;
         }
     }
@@ -164,7 +197,8 @@ public class SNIDApp {
      * @param marriageDate The date of marriage
      */
     public void registerMarriage(String groomId, String brideId, String marriageDate){
-        CivicDoc marriageDocument = new MarriageCertificate(groomId,brideId,marriageDate);
+        MarriageCertificate marriageDocument = new MarriageCertificate(groomId,brideId,marriageDate);
+        marriageDocument.setRefNo(++marriageCounter);
         Citizen groom = records.get(idSearch(groomId));
         Citizen bride = records.get(idSearch(brideId));
         Name brideName = bride.getNameObj();
@@ -328,7 +362,7 @@ public class SNIDApp {
             address = "";
         }
         return personName.getLastName().toUpperCase() + "," +
-                personName.getFirstName() + " " + personName.getLastName() +
+                personName.getFirstName() + " " + personName.getMiddleName() +
                 "\n" + address;
     }
     
@@ -472,6 +506,22 @@ public class SNIDApp {
         }
         return new String[0]; // Returns empty array if the person isn't found
 
+
+    }
+    private String writeMarriage(Citizen citizen){
+        MarriageCertificate cert;
+        try{
+            cert = citizen.getMarriageDoc();
+            String refNo = cert.getRefNo();
+            String groomId = cert.getGroomId();
+            String brideId = cert.getBrideId();
+            String marriageDate = cert.getDate();
+            return String.format("%s,%s,%s,%s",refNo,groomId,brideId,marriageDate);
+        }catch(NullPointerException exception){
+            return "";
+        }
+        
+        
     }
     /**
      * private method used to split address
@@ -550,6 +600,9 @@ public class SNIDApp {
         }
         writeList.add(splitAddress(citizen.getAddress()));
         putParentIds(writeList,citizen);
+        if(!(writeMarriage(citizen).equals(""))){
+            writeList.add(writeMarriage(citizen));
+        }
         String[] writeArr = new String[writeList.size()];
         return writeList.toArray(writeArr);
     }

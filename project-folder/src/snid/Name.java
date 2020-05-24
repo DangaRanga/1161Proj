@@ -72,7 +72,9 @@ public class Name implements Comparable<Name>{
                 name.getMiddleName().equals(mn) &&
                 name.getLastName().equals(ln));
     }
-
+    /**
+     * 
+     */
     public int compareTo(Name name){
         Integer fnComparison = name.getFirstName().compareTo(fn);
         Integer lnComparison = name.getLastName().compareTo(ln);

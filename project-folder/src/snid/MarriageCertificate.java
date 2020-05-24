@@ -23,9 +23,16 @@ public class MarriageCertificate implements CivicDoc{
 
     @Override
     public String getRefNo(){
+        if((refNo.charAt(0)) == 'M'){
+            return refNo;
+        }else{
         return "M" + refNo;
+        }
     }
 
+    public void setRefNo(int newNum){
+        refNo = Integer.toString(newNum);
+    }
     public String getDate(){
         return marriageDate;
     }
