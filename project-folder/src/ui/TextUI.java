@@ -209,6 +209,7 @@ public class TextUI {
             case "h":
                 user.shutdown();
                 input = false;
+                scan.close();
                 break;
             }
    

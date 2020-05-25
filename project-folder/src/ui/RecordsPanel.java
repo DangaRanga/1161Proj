@@ -19,6 +19,7 @@ public class RecordsPanel extends JPanel {
     protected JTextArea detailsArea;
     protected JTextArea recordsArea;
     protected JScrollPane recordsScroll;
+    protected JScrollPane detailsScroll;
     protected JList<String> recordsList;
     protected DefaultTableModel model;
     protected TableRowSorter<DefaultTableModel> sorter;
@@ -51,8 +52,13 @@ public class RecordsPanel extends JPanel {
         recordsScroll.getViewport().setPreferredSize(new Dimension(170, 290));
         recordsScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         recordsScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
+        detailsScroll = new JScrollPane(detailsArea);
+        detailsScroll.getViewport().setPreferredSize(new Dimension(170, 290));
+        detailsScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        detailsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        detailsScroll.getVerticalScrollBar().setPreferredSize(new Dimension(12, 0));
         add(recordsScroll);
-        add(detailsArea);
+        add(detailsScroll);
     }
 
     /**
@@ -115,8 +121,8 @@ public class RecordsPanel extends JPanel {
         return tableColModel;
     }
     /**
-     * returns the idOpt atribute
-     * @return the table
+     * Getter method to retrieve the JTable
+     * @return A JTable Object
      */
     public JTable getTable(){
         return table;

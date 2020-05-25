@@ -47,22 +47,27 @@ public class SNIDGUI extends JFrame {
      * Method to allow the records to be clicked and added to the search bar
      */
     public void recordPanelListeners() {
-        JTable table = displayPanel.recordsPan.table;
+        JTable table = displayPanel.getRecordsPanel().getTable();
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent event) {
                 int currentRow = table.getSelectedRow();
                 if (currentRow > -1) {
                     String id = table.getModel().getValueAt(currentRow, 0).toString();
-                    String data = app.mailingLabel(id);
-                    displayPanel.recordsPan.detailsArea.setText(data);
+                    String data = app.displayCitizenDetails(id);
+                    displayPanel.getRecordsPanel().getDetailsArea().setText(data);
                 }
             }
         });
     }
 
+    /**
+     * Method to allow dynamic filtering for the search bar
+     * This works by using a document listener to detect changes in the
+     * search field
+     */
     public void searchAndFilter() {
-        JTextField searchField = displayPanel.searchPan.searchField;
-        TableRowSorter<DefaultTableModel> sorter = displayPanel.recordsPan.sorter;
+        JTextField searchField = displayPanel.getSearchPanel().getSearchField();
+        TableRowSorter<DefaultTableModel> sorter = displayPanel.getRecordsPanel().getSorter();
         JRadioButton idButton = radioPanel.getIDButton();
         JRadioButton nameButton = radioPanel.getNameButton();
         searchField.getDocument().addDocumentListener(new DocumentListener() {
@@ -98,32 +103,47 @@ public class SNIDGUI extends JFrame {
         });
     }
 
+    /**
+     * Method to add action listeners to the buttons
+     */
     public void buttonPanelListeners() {
-        buttonPanel.clear.addActionListener(new ActionListener() {
+        buttonPanel.getClear().addActionListener(new ActionListener() {
+            /**
+             * Action to clear the search field and the details area
+             * @param event The ActionEvent
+             */
             public void actionPerformed(ActionEvent event) {
-                displayPanel.searchPan.searchField.setText("");
-                displayPanel.recordsPan.detailsArea.setText("");
+                displayPanel.getSearchPanel().getSearchField().setText("");
+                displayPanel.getRecordsPanel().getDetailsArea().setText("");
             }
         });
 
         buttonPanel.quit.addActionListener(new ActionListener() {
+            /**
+             * Action to close the GUI
+             * @param event The action event
+             */
             public void actionPerformed(ActionEvent event) {
                 System.exit(0);
             }
         });
 
         buttonPanel.search.addActionListener(new ActionListener() {
+            /**
+             * Action to search the list of records
+             * 
+             */
             public void actionPerformed(ActionEvent event) {
-                JTable table = displayPanel.recordsPan.table;
-                String input = displayPanel.searchPan.searchField.getText();
-                JTextArea detailsArea = displayPanel.recordsPan.detailsArea;
+                JTable table = displayPanel.getRecordsPanel().getTable();
+                String input = displayPanel.getSearchPanel().getSearchField().getText();
+                JTextArea detailsArea = displayPanel.getRecordsPanel().getDetailsArea();
                 for(int index=0;index < table.getRowCount();index++){
                     System.out.println(table.getRowCount());
                     String id = table.getValueAt(index, 0).toString();
                     System.out.println(String.format("Value: %s",id));
                     System.out.println(String.format("Input: %s:",input));
                     if(id.equals(input)){
-                        detailsArea.setText(app.mailingLabel(id));
+                        detailsArea.setText(app.displayCitizenDetails(id));
                     }
                 }
                 if (detailsArea.getText().equals("")) {

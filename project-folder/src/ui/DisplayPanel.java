@@ -15,5 +15,19 @@ public class DisplayPanel extends JPanel{
         this.add(searchPan,BorderLayout.NORTH);
         this.add(recordsPan);
     }
-    
+    /**
+     * Method to get the records panel
+     * @return {@link RecordsPanel}
+     */
+    public RecordsPanel getRecordsPanel(){
+        return recordsPan;
+    }
+
+    /**
+     * Method to get the searchPanel
+     * @return {@link SearchPanel}
+     */
+    public SearchPanel getSearchPanel(){
+        return searchPan;
+    }
 }
