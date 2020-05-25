@@ -133,6 +133,7 @@ public class Person{
 
     /**
      * Method stub for the addBiometric method
+     * @param data The biometric data to be added
      */
     public void addBiometric(Biometric data){
        biodata.add(data);
@@ -141,7 +142,7 @@ public class Person{
     /**
      * Get Biometric method to return a Biometric object if the 
      * object is found
-     * @param String The biometric tag
+     * @param tag The biometric tag
      * @return A Biometric Object
      * @throws NullPointerException if the desired Biometric does not exist
      */

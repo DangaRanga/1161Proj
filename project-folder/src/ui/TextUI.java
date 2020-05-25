@@ -215,18 +215,4 @@ public class TextUI {
    
         }
     }
-
-public static void main (String[]args){
-    Scanner input = new Scanner(System.in);
-    System.out.println("Enter the file name and delimiter to continue...");
-    System.out.println("File name: ");
-    String fileName = input.next();
-    System.out.println("Delimiter: ");
-    char delimiter = input.next().charAt(0);
-    SNIDApp app = new SNIDApp(fileName, delimiter);
-    TextUI menu = new TextUI();
-    menu.go(app);
-
-    }
-
 }

@@ -2,8 +2,13 @@ package ui;
 import app.*;
 import java.awt.*;
 import javax.swing.*;
+/**
+ * This class represents a JPanel that handles the displaying of all records
+ * @author Jason Gayle
+ * @author Mario Anckle
+ * @author Tatanya Lynch
+ */
 public class DisplayPanel extends JPanel{
-    // TODO Write getters for these attributes
     protected SearchPanel searchPan;
     protected RecordsPanel recordsPan;
     private SNIDApp app;

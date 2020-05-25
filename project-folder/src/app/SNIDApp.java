@@ -70,7 +70,6 @@ public class SNIDApp {
     private void addMarriageDocs(String[] fileLine, Citizen citizen) {
         String refNo = fileLine[13];
         marriageCounter = Integer.parseInt(refNo.substring(1));
-        System.out.println(marriageCounter);
         String groomId = fileLine[14];
         String brideId = fileLine[15];
         String marriageDate = fileLine[16];
@@ -140,7 +139,6 @@ public class SNIDApp {
                 }
             }
             counter = Collections.max(entries);
-            System.out.println(counter);
             idcounter = counter;
         }
     }
@@ -150,11 +148,11 @@ public class SNIDApp {
      * creates a new citizen obj for when they are born sets thier life status to
      * '0' (alive) adds the new citizen to the records arrayList
      * 
-     * @param gender
-     * @param yob
-     * @param fName
-     * @param mName
-     * @param lName
+     * @param gender A character representing the person's gender
+     * @param yob An integer representing the person's year of birth
+     * @param fName A String representing the person's firs name
+     * @param mName A String representing the person's middle name
+     * @param lName A String representing the person's last name
      */
     public void registerBirth(char gender, int yob, String fName, String mName, String lName) {
         Citizen newCitizen = new Citizen(gender, yob, fName, mName, lName);
@@ -397,7 +395,7 @@ public class SNIDApp {
      * checks to see if the id exist if not the returns and empty string if id is
      * found, it retives the persons info from records arrayList
      * 
-     * @param id
+     * @param id The Citizen's id that's being searched
      * @return A formatted String containing individuals ID, gender and full name
      */
     public String search(String id) {
@@ -439,7 +437,7 @@ public class SNIDApp {
      * Binary search from nameSearch() is used to find citezen from list with the
      * name entered
      * 
-     * @param firstName
+     * @param firstName  {@link #nameSearch(String, String) nameSearch}
      * @param lastName  {@link #nameSearch(String, String) nameSearch}
      * @return A a string list that contains the persons ID, gender and full name
      */
@@ -467,12 +465,8 @@ public class SNIDApp {
         return "";
     }
 
-    /**
-     * 
-     * @param id
-     * @param data
-     */
 
+    @Deprecated
     public void addBiometric(String id, String data) {
         Citizen person = records.get(idSearch(id));
         // To get the tag
@@ -489,6 +483,9 @@ public class SNIDApp {
     /**
      * @deprecated
      * @since v1.1
+     * @param id The citizen's id
+     * @param tag The biometric tag
+     * @return The person's biometric details
      */
     @Deprecated
     public String getBiometric(String id, String tag) {
@@ -499,9 +496,9 @@ public class SNIDApp {
 
     /**
      * @deprecated
-     * @param tag
-     * @param value
-     * @return
+     * @param tag The biometric tag
+     * @param value The biometric value
+     * @return A String array representing the data of the citizen
      */
     @Deprecated
     public String[] search(char tag, String value) {
@@ -632,12 +629,5 @@ public class SNIDApp {
         for (Citizen citizen : records) {
             database.putNext(buildList(citizen));
         }
-    }
-
-    public static void main(String[] args) {
-        SNIDApp test = new SNIDApp("Citizens.txt", ',');
-        test.registerBirth('M', 999, "Steve", "Something", "Jobs");
-        System.out.println(Arrays.toString(test.search("Jason", "Gayle")));
-        System.out.println(test.records.get(9).getNameObj().getFirstName());
     }
 }

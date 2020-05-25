@@ -18,6 +18,7 @@ public interface Biometric {
 
     /**
      * Method to check if there is a match with the biometric data
+     * @param other The other biometric object
      * @return An integer representing a match with the biometric data
      */
     public int match(Biometric other); 

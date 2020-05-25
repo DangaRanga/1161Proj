@@ -10,21 +10,26 @@ import javax.swing.text.TableView.TableRow;
 
 import java.awt.*;
 import java.util.ArrayList;
-
+/**
+ * This class represents a JPanel for storing records
+ * @author Jason Gayle
+ * @author Mario Anckle
+ * @author Tatanya Lynch
+ */
 public class RecordsPanel extends JPanel {
     /**
      *
      */
     private static final long serialVersionUID = -8566509772454481150L;
-    protected JTextArea detailsArea;
-    protected JTextArea recordsArea;
-    protected JScrollPane recordsScroll;
-    protected JScrollPane detailsScroll;
-    protected JList<String> recordsList;
-    protected DefaultTableModel model;
-    protected TableRowSorter<DefaultTableModel> sorter;
-    protected TableColumnModel tableColModel;
-    protected JTable table;
+    private JTextArea detailsArea;
+    private JTextArea recordsArea;
+    private JScrollPane recordsScroll;
+    private JScrollPane detailsScroll;
+    private JList<String> recordsList;
+    private DefaultTableModel model;
+    private TableRowSorter<DefaultTableModel> sorter;
+    private TableColumnModel tableColModel;
+    private JTable table;
     private SNIDApp app;
 
     
@@ -63,7 +68,6 @@ public class RecordsPanel extends JPanel {
 
     /**
      * Method to populate the records field
-     * @return nothing
      */
     public void addRecords() {
         ArrayList<Citizen> records = app.getRecords();

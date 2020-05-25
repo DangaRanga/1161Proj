@@ -41,11 +41,11 @@ public class Main {
                         ui.go(app);
                         break;
                     case "x":
+                        choice = false;
+                        input.close();
+                        break;
                 }
             }
-
-            TextUI ui = new TextUI();
-            ui.go(app);
         }
     }
 }

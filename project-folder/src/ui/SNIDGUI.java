@@ -18,6 +18,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 public class SNIDGUI extends JFrame {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 8957128214327425594L;
     private ButtonPanel buttonPanel;
     private RadioPanel radioPanel;
     private DisplayPanel displayPanel;
@@ -152,11 +156,5 @@ public class SNIDGUI extends JFrame {
                 } 
             }
         });
-    }
-
-    public static void main(String[] args) {
-        SNIDGUI gui = new SNIDGUI("SYSTEM FOR NATIONAL IDENTIFICATION(SNID)", new SNIDApp("Citizens.txt", ','));
-        gui.setVisible(true);
-
     }
 }

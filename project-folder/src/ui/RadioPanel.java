@@ -9,12 +9,10 @@ public class RadioPanel extends JPanel{
     private JRadioButton idOption;
     private JRadioButton nameOption;
     private JRadioButton biometricOption;
-    protected GridBagConstraints constraints;
 
     public RadioPanel(){
         setLayout(new FlowLayout());
         ButtonGroup radioGroup = new ButtonGroup();
-        constraints = new GridBagConstraints();
         idOption = new JRadioButton("Search by Id");
         nameOption = new JRadioButton("Search by Name");
         biometricOption = new JRadioButton("Biometric Search");
