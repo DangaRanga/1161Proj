@@ -11,7 +11,7 @@ Change directories to the src folder and type the following command:
 
 javac -d ../bin "the package name"/*.java    
 or  
-javac -d ../bin data/*.java && javac -d ../bin app/*.java (if you want to compile the app and data package at the same time)
+javac -d ../bin data/*.java && javac -d ../bin app/*.java (if you want to compile the app and data package at the same time)  
 or
 javac -d ../bin */*.java
 
