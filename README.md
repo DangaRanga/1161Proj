@@ -1,4 +1,4 @@
-# COMP1161 Object Oriented Programming Project
+# SNID
 This project is an implementation of a System for National Identification(SNID)  
 It involves 3 major components  
 
